@@ -6,18 +6,34 @@ const Splash = () => {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // "Hi" in 15 languages
+  // "Hi" in 15 specific languages
   const greetings = [
-    'Hi', 'Hola', 'Bonjour', 'Hallo', 'Ciao',
-    'नमस्ते', '你好', 'こんにちは', '안녕하세요', 'مرحبا',
-    'Olá', 'Привет', 'Hej', 'Merhaba', 'Sawubona'
+    'Hi',           // English
+    'Hola',         // Spanish
+    'Bonjour',      // French
+    'Hallo',        // German
+    'Ciao',         // Italian
+    'Olá',          // Portuguese
+    'こんにちは',    // Japanese
+    'Привет',       // Russian
+    '你好',          // Chinese
+    'مرحبا',        // Arabic
+    'Cześć',        // Polish
+    'Γεια',         // Greek
+    'Salve',        // Latin
+    'שלום',         // Hebrew
+    'வணக்கம்',      // Tamil
   ];
 
   useEffect(() => {
+    // Mark that splash has been shown
+    sessionStorage.setItem('splashShown', 'true');
+
     if (currentIndex < greetings.length - 1) {
-      const timer = setTimeout(() => setCurrentIndex(currentIndex + 1), 280); // Slightly slower
+      const timer = setTimeout(() => setCurrentIndex(currentIndex + 1), 280);
       return () => clearTimeout(timer);
     } else {
+      // Always navigate to login after splash
       const timer = setTimeout(() => navigate('/login'), 500);
       return () => clearTimeout(timer);
     }

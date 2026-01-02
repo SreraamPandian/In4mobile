@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bell, MapPin, Clock, ChevronRight, CheckCircle2, Calendar, FileText, Clock3, Clock9 } from 'lucide-react';
+import { Bell, MapPin, Clock, ChevronRight, CheckCircle2, Calendar, FileText, ArrowRight } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,17 +25,16 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="pb-8">
-            {/* Sticky Header */}
+        <div className="pb-8 bg-gray-50 min-h-screen">{/* Sticky Header */}
             <div className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-border px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[2px]">
+                    <button onClick={() => navigate('/profile')} className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[2px]">
                         <img
-                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="https://i.pinimg.com/736x/25/d7/5e/25d75ef265bfb76b2f2a5b32fe915b32.jpg"
                             alt="Profile"
                             className="w-full h-full rounded-full border-2 border-white object-cover"
                         />
-                    </div>
+                    </button>
                     <div>
                         <h2 className="text-lg font-bold text-text-main leading-none">Hello, Sriram!</h2>
                         <p className="text-xs text-text-secondary mt-1">Product Manager</p>
@@ -84,38 +83,36 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        {/* Professional Check In and Check Out Buttons */}
+                        {/* New Modern Check In and Check Out Buttons */}
                         <div className="grid grid-cols-2 gap-4">
                             <button
                                 onClick={() => setIsCheckedIn(true)}
                                 disabled={isCheckedIn}
-                                className={`group relative py-5 px-4 rounded-2xl font-semibold transition-all duration-300 ${isCheckedIn
+                                className={`group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-between ${isCheckedIn
                                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-br from-indigo-600 to-indigo-700 text-white shadow-lg shadow-indigo-600/30 hover:shadow-xl hover:shadow-indigo-600/40 active:scale-[0.98]'
+                                    : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 active:scale-[0.98]'
                                     }`}
                             >
-                                <div className="flex flex-col items-center space-y-2">
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isCheckedIn ? 'bg-gray-300' : 'bg-white/20'}`}>
-                                        <Clock3 size={24} strokeWidth={2.5} />
-                                    </div>
-                                    <span className="text-sm">Check In</span>
+                                <div className="flex items-center space-x-2">
+                                    <div className={`w-2 h-2 rounded-full ${isCheckedIn ? 'bg-gray-400' : 'bg-white animate-pulse'}`}></div>
+                                    <span className="text-sm font-bold">CHECK IN</span>
                                 </div>
+                                {!isCheckedIn && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                             </button>
 
                             <button
                                 onClick={() => setIsCheckedIn(false)}
                                 disabled={!isCheckedIn}
-                                className={`group relative py-5 px-4 rounded-2xl font-semibold transition-all duration-300 ${!isCheckedIn
+                                className={`group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-between ${!isCheckedIn
                                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-br from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98]'
+                                    : 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98]'
                                     }`}
                             >
-                                <div className="flex flex-col items-center space-y-2">
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${!isCheckedIn ? 'bg-gray-300' : 'bg-white/20'}`}>
-                                        <Clock9 size={24} strokeWidth={2.5} />
-                                    </div>
-                                    <span className="text-sm">Check Out</span>
+                                <div className="flex items-center space-x-2">
+                                    <div className={`w-2 h-2 rounded-full ${!isCheckedIn ? 'bg-gray-400' : 'bg-white animate-pulse'}`}></div>
+                                    <span className="text-sm font-bold">CHECK OUT</span>
                                 </div>
+                                {isCheckedIn && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                             </button>
                         </div>
                     </Card>
@@ -158,13 +155,17 @@ const Dashboard = () => {
                         <h3 className="text-base font-semibold text-text-main">Recent Activity</h3>
                         <button className="text-xs text-primary font-medium">View All</button>
                     </div>
-                    <Card noPadding>
+                    <Card noPadding className="">
                         {[
-                            { title: 'Leave Approved', time: '2 hours ago', type: 'success', icon: CheckCircle2 },
-                            { title: 'Permission Requested', time: 'Yesterday', type: 'warning', icon: Clock },
-                            { title: 'Payslip Available', time: '2 days ago', type: 'info', icon: FileText },
+                            { title: 'Leave Approved', time: '2 hours ago', type: 'success', icon: CheckCircle2, path: '/leave-approved' },
+                            { title: 'Permission Requested', time: 'Yesterday', type: 'warning', icon: Clock, path: '/permission-requested' },
+                            { title: 'Payslip Available', time: '2 days ago', type: 'info', icon: FileText, path: '/payslip-available' },
                         ].map((activity, idx) => (
-                            <div key={idx} className="flex items-center p-4 border-b border-border last:border-0 hover:bg-gray-50 transition-colors cursor-pointer">
+                            <div
+                                key={idx}
+                                onClick={() => navigate(activity.path)}
+                                className="flex items-center p-4 border-b border-border last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
+                            >
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${activity.type === 'success' ? 'bg-success/10 text-success' :
                                     activity.type === 'warning' ? 'bg-warning/10 text-warning' :
                                         'bg-blue-100 text-blue-600'

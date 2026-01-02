@@ -12,11 +12,11 @@ const Profile = () => {
             <div className="bg-surface pb-8 rounded-b-[2.5rem] shadow-soft-sm border-b border-border relative overflow-hidden">
                 <div className="h-32 bg-gradient-to-r from-primary to-primary-light"></div>
                 <div className="px-6 relative">
-                    <div className="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-12 mb-4 overflow-hidden bg-gray-200">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[3px] -mt-12 mb-4">
                         <img
-                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="https://i.pinimg.com/736x/25/d7/5e/25d75ef265bfb76b2f2a5b32fe915b32.jpg"
                             alt="Profile"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full rounded-full border-4 border-white object-cover"
                         />
                     </div>
                     <div className="flex justify-between items-start">
@@ -112,7 +112,7 @@ const Profile = () => {
                     <span>Log Out</span>
                 </button>
             </div>
-        </div>
+        </div >
     );
 };
 
