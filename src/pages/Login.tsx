@@ -55,7 +55,6 @@ const Login = () => {
                                 type="email"
                                 placeholder="Enter your email"
                                 className="w-full h-14 pl-12 pr-4 bg-background rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text-main placeholder:text-text-muted"
-                                required
                             />
                         </div>
                     </div>
@@ -70,7 +69,6 @@ const Login = () => {
                                 type={showPassword ? "text" : "password"}
                                 placeholder="••••••••"
                                 className="w-full h-14 pl-12 pr-12 bg-background rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text-main placeholder:text-text-muted"
-                                required
                             />
                             <button
                                 type="button"
