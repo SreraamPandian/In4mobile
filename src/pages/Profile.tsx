@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Settings, LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Shield, Bell, HelpCircle, Key } from 'lucide-react';
-import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
+import { Settings, LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Key } from 'lucide-react';
+import Card from '../components/ui/Card';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -15,14 +14,14 @@ const Profile = () => {
                 <div className="px-6 relative">
                     <div className="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-12 mb-4 overflow-hidden bg-gray-200">
                         <img
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt="Profile"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="flex justify-between items-start">
                         <div>
-                            <h1 className="text-2xl font-bold text-text-main">John Doe</h1>
+                            <h1 className="text-2xl font-bold text-text-main">Sriram</h1>
                             <p className="text-text-secondary font-medium">Product Manager</p>
                             <p className="text-xs text-text-muted mt-1">ID: EMP001</p>
                         </div>
@@ -55,7 +54,7 @@ const Profile = () => {
                         <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                             <Mail size={16} />
                         </div>
-                        <span className="text-text-secondary">john.doe@company.com</span>
+                        <span className="text-text-secondary">sriram@company.com</span>
                     </div>
                     <div className="flex items-center space-x-3 text-sm">
                         <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
@@ -93,23 +92,17 @@ const Profile = () => {
                     </div>
                 </Card>
 
-                {/* Settings Menu */}
-                <div className="space-y-2">
-                    {[
-                        { icon: Key, label: 'Change Password' },
-                        { icon: Bell, label: 'Notifications' },
-                        { icon: Shield, label: 'Privacy & Security' },
-                        { icon: HelpCircle, label: 'Help & Support' },
-                    ].map((item, idx) => (
-                        <button key={idx} className="w-full flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:bg-gray-50 transition-colors">
-                            <div className="flex items-center space-x-3">
-                                <item.icon size={20} className="text-text-secondary" />
-                                <span className="text-sm font-medium text-text-main">{item.label}</span>
-                            </div>
-                            <ChevronRight size={18} className="text-text-muted" />
-                        </button>
-                    ))}
-                </div>
+                {/* Change Password Button Only */}
+                <button
+                    onClick={() => navigate('/change-password')}
+                    className="w-full flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:bg-gray-50 transition-colors"
+                >
+                    <div className="flex items-center space-x-3">
+                        <Key size={20} className="text-text-secondary" />
+                        <span className="text-sm font-medium text-text-main">Change Password</span>
+                    </div>
+                    <ChevronRight size={18} className="text-text-muted" />
+                </button>
 
                 <button
                     onClick={() => navigate('/login')}

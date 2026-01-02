@@ -8,6 +8,7 @@ import Attendance from './pages/Attendance';
 import ApplyLeave from './pages/ApplyLeave';
 import Profile from './pages/Profile';
 import Payslip from './pages/Payslip';
+import ChangePassword from './pages/ChangePassword';
 
 // Placeholder for Reports
 const Reports = () => (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/payslip" element={<Payslip />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           {/* Catch all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
