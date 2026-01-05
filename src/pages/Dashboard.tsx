@@ -7,6 +7,19 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
     const navigate = useNavigate();
     const [isCheckedIn, setIsCheckedIn] = useState(false);
+    const [checkInTime, setCheckInTime] = useState<string | null>(null);
+    const [checkOutTime, setCheckOutTime] = useState<string | null>(null);
+
+    const handleCheckIn = () => {
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        setCheckInTime(time);
+        setIsCheckedIn(true);
+    };
+
+    const handleCheckOut = () => {
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        setCheckOutTime(time);
+    };
 
     // Animation variants
     const container = {
@@ -83,38 +96,68 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        {/* New Modern Check In and Check Out Buttons */}
-                        <div className="grid grid-cols-2 gap-4">
+                        {/* Check In and Check Out Buttons - Always Enabled */}
+                        <div className="grid grid-cols-2 gap-4 mb-4">
                             <button
-                                onClick={() => setIsCheckedIn(true)}
-                                disabled={isCheckedIn}
-                                className={`group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-between ${isCheckedIn
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 active:scale-[0.98]'
-                                    }`}
+                                onClick={handleCheckIn}
+                                className="group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 active:scale-[0.98]"
                             >
-                                <div className="flex items-center space-x-2">
-                                    <div className={`w-2 h-2 rounded-full ${isCheckedIn ? 'bg-gray-400' : 'bg-white animate-pulse'}`}></div>
-                                    <span className="text-sm font-bold">CHECK IN</span>
+                                <div className="flex flex-col items-center space-y-1">
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
+                                        <span className="text-sm font-bold">CHECK IN</span>
+                                    </div>
+                                    {checkInTime && (
+                                        <span className="text-xs opacity-90">{checkInTime}</span>
+                                    )}
                                 </div>
-                                {!isCheckedIn && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                             </button>
 
                             <button
-                                onClick={() => setIsCheckedIn(false)}
-                                disabled={!isCheckedIn}
-                                className={`group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-between ${!isCheckedIn
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98]'
-                                    }`}
+                                onClick={handleCheckOut}
+                                className="group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98]"
                             >
-                                <div className="flex items-center space-x-2">
-                                    <div className={`w-2 h-2 rounded-full ${!isCheckedIn ? 'bg-gray-400' : 'bg-white animate-pulse'}`}></div>
-                                    <span className="text-sm font-bold">CHECK OUT</span>
+                                <div className="flex flex-col items-center space-y-1">
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
+                                        <span className="text-sm font-bold">CHECK OUT</span>
+                                    </div>
+                                    {checkOutTime && (
+                                        <span className="text-xs opacity-90">{checkOutTime}</span>
+                                    )}
                                 </div>
-                                {isCheckedIn && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
                             </button>
                         </div>
+
+                        {/* Attendance Details */}
+                        {(checkInTime || checkOutTime) && (
+                            <div className="p-4 bg-gray-50 rounded-xl space-y-3">
+                                <h4 className="font-bold text-sm text-gray-700">Today's Attendance</h4>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {checkInTime && (
+                                        <div>
+                                            <p className="text-xs text-text-secondary mb-1">Check In</p>
+                                            <p className="text-sm font-semibold text-success">{checkInTime}</p>
+                                            <p className="text-xs text-text-muted mt-1">Office HQ, Chennai</p>
+                                        </div>
+                                    )}
+                                    {checkOutTime && (
+                                        <div>
+                                            <p className="text-xs text-text-secondary mb-1">Check Out</p>
+                                            <p className="text-sm font-semibold text-error">{checkOutTime}</p>
+                                            <p className="text-xs text-text-muted mt-1">Office HQ, Chennai</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={() => window.open('https://www.google.com/maps?q=13.0827,80.2707', '_blank')}
+                                    className="w-full py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-2 text-sm"
+                                >
+                                    <MapPin size={16} />
+                                    <span>View on Map</span>
+                                </button>
+                            </div>
+                        )}
                     </Card>
                 </motion.div>
 

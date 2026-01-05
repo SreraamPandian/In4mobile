@@ -25,6 +25,15 @@ import MyPunchRequestReport from './pages/MyPunchRequestReport';
 import LeaveApproved from './pages/LeaveApproved';
 import PermissionRequested from './pages/PermissionRequested';
 import PayslipAvailable from './pages/PayslipAvailable';
+import ApplyOT from './pages/ApplyOT';
+import ApplyCompOff from './pages/ApplyCompOff';
+import ApprovedOTList from './pages/ApprovedOTList';
+import ApprovedCompOffList from './pages/ApprovedCompOffList';
+import ManagerLeaveApprovals from './pages/ManagerLeaveApprovals';
+import ManagerPermissionApprovals from './pages/ManagerPermissionApprovals';
+import EmployeeAttendanceReport from './pages/EmployeeAttendanceReport';
+import MonthlyAttendanceReport from './pages/MonthlyAttendanceReport';
+import EmployeeList from './pages/EmployeeList';
 
 // Placeholder for Reports
 const Reports = () => (
@@ -44,6 +53,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/attendance" element={<Attendance />} />
+            <Route path="/employee-attendance-report" element={<EmployeeAttendanceReport />} />
+            <Route path="/monthly-attendance-report" element={<MonthlyAttendanceReport />} />
+            <Route path="/employee-list" element={<EmployeeList />} />
             <Route path="/apply-leave" element={<ApplyLeave />} />
             <Route path="/quick-actions" element={<QuickActions />} />
             <Route path="/my-leave-report" element={<MyLeaveReport />} />
@@ -51,8 +63,14 @@ function App() {
             <Route path="/apply-permission" element={<ApplyPermission />} />
             <Route path="/my-permission-reports" element={<MyPermissionReports />} />
             <Route path="/my-compoff-reports" element={<MyCompOffReports />} />
+            <Route path="/apply-compoff" element={<ApplyCompOff />} />
+            <Route path="/approved-compoff-list" element={<ApprovedCompOffList />} />
+            <Route path="/apply-ot" element={<ApplyOT />} />
+            <Route path="/approved-ot-list" element={<ApprovedOTList />} />
             <Route path="/apply-punch-request" element={<ApplyPunchRequest />} />
             <Route path="/my-punch-reports" element={<MyPunchRequestReport />} />
+            <Route path="/manager-leave-approvals" element={<ManagerLeaveApprovals />} />
+            <Route path="/manager-permission-approvals" element={<ManagerPermissionApprovals />} />
             <Route path="/payslip" element={<Payslip />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/profile" element={<Profile />} />

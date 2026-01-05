@@ -10,7 +10,9 @@ import {
   ChevronRight,
   FileText,
   CheckCircle2,
-  List
+  List,
+  UserCheck,
+  ClipboardCheck
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
@@ -57,7 +59,21 @@ const QuickActions = () => {
       color: 'bg-blue-50 text-blue-600',
       hasDropdown: true,
       subItems: [
+        { title: 'Apply Comp Off', path: '/apply-compoff', icon: FileText },
         { title: 'My Comp Off Reports', path: '/my-compoff-reports', icon: List },
+        { title: 'Approved Comp Off List', path: '/approved-compoff-list', icon: ClipboardCheck },
+      ]
+    },
+    {
+      id: 'ot',
+      icon: Clock,
+      title: 'Overtime (OT)',
+      subtitle: 'Apply OT & View Approvals',
+      color: 'bg-amber-50 text-amber-600',
+      hasDropdown: true,
+      subItems: [
+        { title: 'Apply OT', path: '/apply-ot', icon: FileText },
+        { title: 'Approved OT List', path: '/approved-ot-list', icon: ClipboardCheck },
       ]
     },
     {
@@ -73,13 +89,25 @@ const QuickActions = () => {
       ]
     },
     {
+      id: 'manager-approvals',
+      icon: UserCheck,
+      title: 'Manager Approvals',
+      subtitle: 'Approve Leave & Permission Requests',
+      color: 'bg-rose-50 text-rose-600',
+      hasDropdown: true,
+      subItems: [
+        { title: 'Approved Leave List', path: '/manager-leave-approvals', icon: CheckCircle2 },
+        { title: 'Approved Permission List', path: '/manager-permission-approvals', icon: CheckCircle2 },
+      ]
+    },
+    {
       id: 'monthly-report',
       icon: Calendar,
       title: 'Monthly Attendance Report',
       subtitle: 'Overview of Employee Attendance for the Month',
       color: 'bg-orange-50 text-orange-600',
       hasDropdown: false,
-      path: '/attendance'
+      path: '/monthly-attendance-report'
     },
     {
       id: 'employee-attendance',
@@ -88,7 +116,7 @@ const QuickActions = () => {
       subtitle: 'Overview of daily Employee Attendance',
       color: 'bg-green-50 text-green-600',
       hasDropdown: false,
-      path: '/attendance'
+      path: '/employee-attendance-report'
     },
   ];
 

@@ -37,12 +37,12 @@ const MyPermissionReports = () => {
                                 <Card key={idx} className="dark:bg-gray-800">
                                     <div className="flex items-center justify-between mb-2">
                                         <div className="flex items-center space-x-2">
-                                            <Calendar size={16} className="text-primary" />
+                                            <Calendar size={16} className="text-primary/70" />
                                             <span className="font-semibold text-sm">{item.date}</span>
                                         </div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'Approved' ? 'bg-success/10 text-success' :
-                                                item.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                                    'bg-warning/10 text-warning'
+                                            item.status === 'Rejected' ? 'bg-error/10 text-error' :
+                                                'bg-warning/10 text-warning'
                                             }`}>{item.status}</span>
                                     </div>
                                     <p className="text-sm text-text-secondary mb-1">{item.time}</p>
