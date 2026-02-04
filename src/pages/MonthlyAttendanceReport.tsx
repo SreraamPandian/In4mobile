@@ -55,7 +55,7 @@ const MonthlyAttendanceReport = () => {
         switch (status) {
             case 'PH': return 'text-purple-600';
             case 'WFH': return 'text-green-600';
-            case 'WO': return 'text-blue-600';
+            case 'WO': return 'text-primary';
             case 'AA': return 'text-red-600';
             default: return 'text-gray-400';
         }
@@ -65,7 +65,7 @@ const MonthlyAttendanceReport = () => {
         switch (status) {
             case 'PH': return 'bg-purple-500';
             case 'WFH': return 'bg-green-500';
-            case 'WO': return 'bg-blue-500';
+            case 'WO': return 'bg-primary/80';
             case 'AA': return 'bg-red-500';
             default: return 'bg-gray-400';
         }
@@ -74,7 +74,7 @@ const MonthlyAttendanceReport = () => {
     const legends = [
         { code: 'PH', label: 'Public Holiday', color: 'bg-purple-500' },
         { code: 'WFH', label: 'Full Work From Home', color: 'bg-green-500' },
-        { code: 'WO', label: 'Week Off', color: 'bg-blue-500' },
+        { code: 'WO', label: 'Week Off', color: 'bg-primary/80' },
         { code: 'AA', label: 'Full Absent', color: 'bg-red-500' },
     ];
 

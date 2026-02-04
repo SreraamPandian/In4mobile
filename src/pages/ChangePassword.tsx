@@ -67,7 +67,7 @@ const ChangePassword = () => {
                             <input
                                 type={showCurrentPassword ? 'text' : 'password'}
                                 placeholder="Enter current password"
-                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all text-gray-900"
+                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
                                 required
                             />
                             <button
@@ -89,7 +89,7 @@ const ChangePassword = () => {
                             <input
                                 type={showNewPassword ? 'text' : 'password'}
                                 placeholder="Enter new password"
-                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all text-gray-900"
+                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
                                 required
                             />
                             <button
@@ -114,7 +114,7 @@ const ChangePassword = () => {
                             <input
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 placeholder="Re-enter new password"
-                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all text-gray-900"
+                                className="w-full h-14 pl-4 pr-12 bg-white rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
                                 required
                             />
                             <button
@@ -136,19 +136,19 @@ const ChangePassword = () => {
                 </form>
 
                 {/* Password Requirements */}
-                <div className="mt-8 p-4 bg-blue-50 rounded-xl">
+                <div className="mt-8 p-4 bg-primary/5 rounded-xl">
                     <h3 className="text-sm font-semibold text-gray-900 mb-3">Password Requirements:</h3>
                     <ul className="space-y-2 text-sm text-gray-600">
                         <li className="flex items-center space-x-2">
-                            <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full"></div>
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                             <span>At least 8 characters long</span>
                         </li>
                         <li className="flex items-center space-x-2">
-                            <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full"></div>
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                             <span>Include at least one uppercase letter</span>
                         </li>
                         <li className="flex items-center space-x-2">
-                            <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full"></div>
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                             <span>Include at least one number</span>
                         </li>
                     </ul>

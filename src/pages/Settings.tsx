@@ -1,150 +1,115 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, Globe, Shield, HelpCircle, Info, ChevronRight, X } from 'lucide-react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Key } from 'lucide-react';
+import Card from '../components/ui/Card';
 
 const Settings = () => {
     const navigate = useNavigate();
-    const [showLanguageModal, setShowLanguageModal] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState('English');
-    const [toastMessage, setToastMessage] = useState('');
-
-    const showToast = (message: string) => {
-        setToastMessage(message);
-        setTimeout(() => setToastMessage(''), 3000);
-    };
-
-    const languages = ['English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Chinese', 'Japanese', 'Russian', 'Arabic', 'Polish'];
-
-    const handleLanguageSelect = (lang: string) => {
-        setSelectedLanguage(lang);
-        setShowLanguageModal(false);
-        showToast(`Language changed to ${lang}`);
-    };
-
-    const openLink = (path: string) => {
-        navigate(path);
-    };
 
     return (
-        <div className="pb-24 px-6 pt-6 bg-gray-50 min-h-screen relative">
-            <h1 className="text-2xl font-bold text-text-main mb-6">Settings</h1>
-
-            <div className="space-y-6">
-                {/* Preferences */}
-                <section>
-                    <h2 className="text-sm font-bold text-text-secondary uppercase tracking-wider mb-3 px-1">Preferences</h2>
-                    <div className="space-y-3">
-                        <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-border shadow-sm">
-                            <div className="flex items-center space-x-3">
-                                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
-                                    <Bell size={20} />
-                                </div>
-                                <span className="font-medium text-text-main">Notifications</span>
-                            </div>
-                            <button className="relative w-12 h-6 bg-primary rounded-full transition-colors">
-                                <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                            </button>
+        <div className="pb-8">
+            {/* Header Profile Section */}
+            <div className="bg-surface pb-8 rounded-b-[2.5rem] shadow-soft-sm border-b border-border relative overflow-hidden">
+                <div className="h-32 bg-gradient-to-r from-primary to-primary-light"></div>
+                <div className="px-6 relative">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-primary-light p-[3px] -mt-12 mb-4">
+                        <img
+                            src="https://i.pinimg.com/736x/25/d7/5e/25d75ef265bfb76b2f2a5b32fe915b32.jpg"
+                            alt="Profile"
+                            className="w-full h-full rounded-full border-4 border-white object-cover"
+                        />
+                    </div>
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h1 className="text-2xl font-bold text-text-main">Sriram</h1>
+                            <p className="text-text-secondary font-medium">Product Manager</p>
+                            <p className="text-xs text-text-muted mt-1">ID: EMP001</p>
                         </div>
-                        <button
-                            className="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-border shadow-sm active:scale-98 transition-all"
-                            onClick={() => setShowLanguageModal(true)}
-                        >
-                            <div className="flex items-center space-x-3">
-                                <div className="p-2 bg-green-50 text-green-600 rounded-lg">
-                                    <Globe size={20} />
-                                </div>
-                                <span className="font-medium text-text-main">Language</span>
-                            </div>
-                            <div className="flex items-center space-x-2 text-text-secondary">
-                                <span className="text-sm">{selectedLanguage}</span>
-                                <ChevronRight size={16} />
-                            </div>
-                        </button>
                     </div>
-                </section>
-
-                {/* Support & Info */}
-                <section>
-                    <h2 className="text-sm font-bold text-text-secondary uppercase tracking-wider mb-3 px-1">Support</h2>
-                    <div className="space-y-3">
-                        {[
-                            { icon: Shield, label: 'Privacy Policy', color: 'bg-orange-50 text-orange-600', path: '/privacy-policy' },
-                            { icon: HelpCircle, label: 'Help & Support', color: 'bg-teal-50 text-teal-600', path: '/help-support' },
-                            { icon: Info, label: 'About App', color: 'bg-indigo-50 text-indigo-600', path: '/about-app' },
-                        ].map((item, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => openLink(item.path)}
-                                className="w-full flex items-center justify-between p-4 bg-white rounded-xl border border-border shadow-sm active:scale-98 transition-all"
-                            >
-                                <div className="flex items-center space-x-3">
-                                    <div className={`p-2 rounded-lg ${item.color}`}>
-                                        <item.icon size={20} />
-                                    </div>
-                                    <span className="font-medium text-text-main">{item.label}</span>
-                                </div>
-                                <ChevronRight size={16} className="text-text-muted" />
-                            </button>
-                        ))}
-                    </div>
-                </section>
+                </div>
             </div>
 
-            {/* Language Modal */}
-            <AnimatePresence>
-                {showLanguageModal && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"
-                            onClick={() => setShowLanguageModal(false)}
-                        />
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            className="fixed top-1/3 left-6 right-6 -translate-y-1/2 bg-white rounded-2xl shadow-xl z-[70] overflow-hidden max-h-[70vh]"
-                        >
-                            <div className="p-5 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
-                                <h3 className="font-bold text-lg">Select Language</h3>
-                                <button onClick={() => setShowLanguageModal(false)} className="p-1 hover:bg-gray-100 rounded-full">
-                                    <X size={20} className="text-gray-500" />
-                                </button>
-                            </div>
-                            <div className="p-2 overflow-y-auto max-h-[calc(70vh-80px)]">
-                                {languages.map((lang, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => handleLanguageSelect(lang)}
-                                        className={`w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors ${selectedLanguage === lang ? 'bg-primary/10 text-primary font-medium' : 'text-text-main'
-                                            }`}
-                                    >
-                                        {lang}
-                                    </button>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+            <div className="px-6 mt-6 space-y-6">
+                {/* Quick Stats */}
+                <div className="grid grid-cols-3 gap-4">
+                    {[
+                        { label: 'Total Days', value: '365' },
+                        { label: 'Present', value: '320' },
+                        { label: 'Attendance', value: '98%', textClass: 'text-success' },
+                    ].map((stat, idx) => (
+                        <Card key={idx} className="flex flex-col items-center justify-center py-4 px-2" noPadding>
+                            <span className={`text-lg font-bold ${stat.textClass || 'text-text-main'}`}>{stat.value}</span>
+                            <span className="text-[10px] text-text-muted uppercase font-medium mt-1 text-center">{stat.label}</span>
+                        </Card>
+                    ))}
+                </div>
 
-            {/* Toast */}
-            <AnimatePresence>
-                {toastMessage && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 50 }}
-                        className="fixed bottom-24 left-6 right-6 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-lg z-50 text-center"
-                    >
-                        {toastMessage}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+                {/* Info Cards */}
+                <Card className="space-y-4">
+                    <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-2">Personal Information</h3>
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <Mail size={16} />
+                        </div>
+                        <span className="text-text-secondary">sriram@company.com</span>
+                    </div>
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                            <Phone size={16} />
+                        </div>
+                        <span className="text-text-secondary">+91 98765 43210</span>
+                    </div>
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+                            <MapPin size={16} />
+                        </div>
+                        <span className="text-text-secondary">Mumbai, India</span>
+                    </div>
+                </Card>
+
+                <Card className="space-y-4">
+                    <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-2">Work Details</h3>
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+                            <Briefcase size={16} />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-text-main font-medium">Engineering Dept</span>
+                            <span className="text-xs text-text-muted">Full Time</span>
+                        </div>
+                    </div>
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center text-teal-600">
+                            <User size={16} />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-text-main font-medium">Reports to Jane Smith</span>
+                            <span className="text-xs text-text-muted">Joined Jan 2023</span>
+                        </div>
+                    </div>
+                </Card>
+
+                {/* Change Password Button */}
+                <button
+                    onClick={() => navigate('/change-password')}
+                    className="w-full flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:bg-gray-50 transition-colors"
+                >
+                    <div className="flex items-center space-x-3">
+                        <Key size={20} className="text-text-secondary" />
+                        <span className="text-sm font-medium text-text-main">Change Password</span>
+                    </div>
+                    <ChevronRight size={18} className="text-text-muted" />
+                </button>
+
+                <button
+                    onClick={() => navigate('/login')}
+                    className="w-full py-4 rounded-xl border border-error/30 text-error font-medium hover:bg-error/5 transition-colors flex items-center justify-center space-x-2"
+                >
+                    <LogOut size={18} />
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </div >
     );
 };
 

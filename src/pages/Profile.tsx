@@ -12,7 +12,7 @@ const Profile = () => {
             <div className="bg-surface pb-8 rounded-b-[2.5rem] shadow-soft-sm border-b border-border relative overflow-hidden">
                 <div className="h-32 bg-gradient-to-r from-primary to-primary-light"></div>
                 <div className="px-6 relative">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[3px] -mt-12 mb-4">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-primary-light p-[3px] -mt-12 mb-4">
                         <img
                             src="https://i.pinimg.com/736x/25/d7/5e/25d75ef265bfb76b2f2a5b32fe915b32.jpg"
                             alt="Profile"
@@ -51,7 +51,7 @@ const Profile = () => {
                 <Card className="space-y-4">
                     <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-2">Personal Information</h3>
                     <div className="flex items-center space-x-3 text-sm">
-                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                             <Mail size={16} />
                         </div>
                         <span className="text-text-secondary">sriram@company.com</span>

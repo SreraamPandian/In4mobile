@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Bell, MapPin, Clock, ChevronRight, CheckCircle2, Calendar, FileText, ArrowRight } from 'lucide-react';
+import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, Sun, Moon, Sunrise, Sunset, LogIn, LogOut } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,14 @@ const Dashboard = () => {
     const [isCheckedIn, setIsCheckedIn] = useState(false);
     const [checkInTime, setCheckInTime] = useState<string | null>(null);
     const [checkOutTime, setCheckOutTime] = useState<string | null>(null);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 60000); // Update every minute
+        return () => clearInterval(timer);
+    }, []);
 
     const handleCheckIn = () => {
         const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -19,6 +27,46 @@ const Dashboard = () => {
     const handleCheckOut = () => {
         const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         setCheckOutTime(time);
+        setIsCheckedIn(false);
+    };
+
+    const getTimeIcon = () => {
+        const hour = currentTime.getHours();
+
+        if (hour >= 6 && hour < 12) {
+            // Sunrise - Soft orange glow
+            return (
+                <div className="relative">
+                    <div className="absolute inset-0 bg-warning/30 blur-md rounded-full"></div>
+                    <Sunrise size={24} className="relative text-warning animate-pulse-slow" />
+                </div>
+            );
+        }
+        if (hour >= 12 && hour < 17) {
+            // Sun - Bright yellow ray effect
+            return (
+                <div className="relative">
+                    <div className="absolute inset-0 bg-yellow-400/20 blur-lg rounded-full"></div>
+                    <Sun size={24} className="relative text-yellow-500 animate-[spin_10s_linear_infinite]" />
+                </div>
+            );
+        }
+        if (hour >= 17 && hour < 20) {
+            // Sunset - Deep orange/red
+            return (
+                <div className="relative">
+                    <div className="absolute inset-0 bg-orange-500/20 blur-md rounded-full"></div>
+                    <Sunset size={24} className="relative text-orange-600" />
+                </div>
+            );
+        }
+        // Moon - Cool ethereal glow
+        return (
+            <div className="relative">
+                <div className="absolute inset-0 bg-primary/30 blur-md rounded-full"></div>
+                <Moon size={24} className="relative text-primary fill-primary/20" />
+            </div>
+        );
     };
 
     // Animation variants
@@ -38,27 +86,7 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="pb-8 bg-gray-50 min-h-screen">{/* Sticky Header */}
-            <div className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-border px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <button onClick={() => navigate('/profile')} className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[2px]">
-                        <img
-                            src="https://i.pinimg.com/736x/25/d7/5e/25d75ef265bfb76b2f2a5b32fe915b32.jpg"
-                            alt="Profile"
-                            className="w-full h-full rounded-full border-2 border-white object-cover"
-                        />
-                    </button>
-                    <div>
-                        <h2 className="text-lg font-bold text-text-main leading-none">Hello, Sriram!</h2>
-                        <p className="text-xs text-text-secondary mt-1">Product Manager</p>
-                    </div>
-                </div>
-                <button className="relative p-2 text-text-secondary hover:bg-background rounded-full transition-colors">
-                    <Bell size={24} />
-                    <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-error rounded-full border-2 border-white"></span>
-                </button>
-            </div>
-
+        <div className="pb-8 bg-gray-50 min-h-screen">
             <motion.div
                 variants={container}
                 initial="hidden"
@@ -77,56 +105,62 @@ const Dashboard = () => {
                                     {isCheckedIn ? 'Checked In' : 'Not Checked In'}
                                 </h3>
                             </div>
-                            <div className={`p-3 rounded-xl ${isCheckedIn ? 'bg-success/10 text-success' : 'bg-primary/10 text-primary'}`}>
-                                <MapPin size={22} strokeWidth={2.5} />
-                            </div>
                         </div>
 
                         <div className="flex items-center space-x-6 mb-8">
                             <div>
-                                <p className="text-xs text-text-muted mb-1">Time</p>
-                                <p className="text-xl font-mono font-semibold text-text-main">09:15 AM</p>
-                            </div>
-                            <div className="h-8 w-[1px] bg-border"></div>
-                            <div>
-                                <p className="text-xs text-text-muted mb-1">Location</p>
-                                <p className="text-sm font-medium text-text-main flex items-center">
-                                    Office HQ
-                                </p>
+                                <p className="text-xs text-text-muted mb-1">{currentTime.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                                <div className="flex items-center space-x-2">
+                                    <p className="text-xl font-mono font-semibold text-text-main">
+                                        {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                    {getTimeIcon()}
+                                </div>
                             </div>
                         </div>
 
-                        {/* Check In and Check Out Buttons - Always Enabled */}
-                        <div className="grid grid-cols-2 gap-4 mb-4">
-                            <button
-                                onClick={handleCheckIn}
-                                className="group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 active:scale-[0.98]"
-                            >
-                                <div className="flex flex-col items-center space-y-1">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-                                        <span className="text-sm font-bold">CHECK IN</span>
-                                    </div>
-                                    {checkInTime && (
-                                        <span className="text-xs opacity-90">{checkInTime}</span>
-                                    )}
-                                </div>
-                            </button>
+                        {/* Circular Check In / Out Buttons */}
+                        <div className="flex justify-center items-center mb-6 py-2">
+                            {!isCheckedIn ? (
+                                <button
+                                    onClick={handleCheckIn}
+                                    className="group flex flex-col items-center justify-center relative transition-transform active:scale-95"
+                                >
+                                    {/* Outer soft glow ring */}
+                                    <div className="w-40 h-40 rounded-full bg-primary/5 flex items-center justify-center relative">
+                                        {/* Middle Ring */}
+                                        <div className="absolute w-28 h-28 rounded-full border border-primary/20 flex items-center justify-center"></div>
 
-                            <button
-                                onClick={handleCheckOut}
-                                className="group relative py-4 px-5 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98]"
-                            >
-                                <div className="flex flex-col items-center space-y-1">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-                                        <span className="text-sm font-bold">CHECK OUT</span>
+                                        {/* Inner Circle with Icon */}
+                                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center z-10">
+                                            <LogIn size={28} className="text-primary ml-1" />
+                                        </div>
                                     </div>
-                                    {checkOutTime && (
-                                        <span className="text-xs opacity-90">{checkOutTime}</span>
-                                    )}
-                                </div>
-                            </button>
+
+                                    <span className="text-lg font-bold text-primary mt-3">Check In</span>
+
+                                    {checkInTime && <span className="text-xs font-medium text-success absolute -bottom-6">{checkInTime}</span>}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleCheckOut}
+                                    className="group flex flex-col items-center justify-center relative transition-transform active:scale-95"
+                                >
+                                    {/* Outer soft glow ring */}
+                                    <div className="w-40 h-40 rounded-full bg-red-50 flex items-center justify-center relative">
+                                        {/* Middle Ring */}
+                                        <div className="absolute w-28 h-28 rounded-full border border-red-200 flex items-center justify-center"></div>
+
+                                        {/* Inner Circle with Icon */}
+                                        <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center z-10">
+                                            <LogOut size={28} className="text-red-600 mr-1" />
+                                        </div>
+                                    </div>
+
+                                    <span className="text-lg font-bold text-red-600 mt-3">Check Out</span>
+                                    {checkOutTime && <span className="text-xs font-medium text-error absolute -bottom-6">{checkOutTime}</span>}
+                                </button>
+                            )}
                         </div>
 
                         {/* Attendance Details */}
@@ -138,24 +172,15 @@ const Dashboard = () => {
                                         <div>
                                             <p className="text-xs text-text-secondary mb-1">Check In</p>
                                             <p className="text-sm font-semibold text-success">{checkInTime}</p>
-                                            <p className="text-xs text-text-muted mt-1">Office HQ, Chennai</p>
                                         </div>
                                     )}
                                     {checkOutTime && (
                                         <div>
                                             <p className="text-xs text-text-secondary mb-1">Check Out</p>
                                             <p className="text-sm font-semibold text-error">{checkOutTime}</p>
-                                            <p className="text-xs text-text-muted mt-1">Office HQ, Chennai</p>
                                         </div>
                                     )}
                                 </div>
-                                <button
-                                    onClick={() => window.open('https://www.google.com/maps?q=13.0827,80.2707', '_blank')}
-                                    className="w-full py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-2 text-sm"
-                                >
-                                    <MapPin size={16} />
-                                    <span>View on Map</span>
-                                </button>
                             </div>
                         )}
                     </Card>
@@ -166,17 +191,21 @@ const Dashboard = () => {
                     <h3 className="text-base font-semibold text-text-main mb-3">Overview</h3>
                     <div className="grid grid-cols-2 gap-4">
                         <Card
-                            className="bg-gradient-to-br from-primary/5 to-transparent border-primary/10 cursor-pointer hover:shadow-md transition-shadow"
-                            onClick={() => navigate('/attendance')}
+                            className="bg-gradient-to-br from-primary/5 to-transparent border-primary/10 cursor-pointer hover:shadow-md transition-shadow relative overflow-hidden"
+                            onClick={() => navigate('/attendance-calendar')}
                         >
                             <div className="flex items-center space-x-2 mb-2 text-primary">
                                 <CheckCircle2 size={18} />
                                 <span className="text-xs font-bold uppercase tracking-wider">Attendance</span>
                             </div>
-                            <p className="text-2xl font-bold text-text-main">98%</p>
-                            <div className="w-full h-1.5 bg-gray-200 rounded-full mt-3 overflow-hidden">
-                                <div className="h-full bg-primary w-[98%] rounded-full"></div>
+
+                            <div className="flex items-center justify-between">
+                                <p className="text-2xl font-bold text-text-main">98%</p>
+                                <div className="w-12 h-12 rounded-full relative" style={{ background: `conic-gradient(var(--card-primary, #6d56a4) 98%, #e5e7eb 0)` }}>
+                                    <div className="absolute inset-2 bg-white rounded-full"></div>
+                                </div>
                             </div>
+                            <p className="text-[10px] text-text-muted mt-2">Tap to view calendar</p>
                         </Card>
                         <Card
                             className="bg-gradient-to-br from-success/5 to-transparent border-success/10 cursor-pointer hover:shadow-md transition-shadow"
@@ -211,7 +240,7 @@ const Dashboard = () => {
                             >
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${activity.type === 'success' ? 'bg-success/10 text-success' :
                                     activity.type === 'warning' ? 'bg-warning/10 text-warning' :
-                                        'bg-blue-100 text-blue-600'
+                                        'bg-primary/10 text-primary'
                                     }`}>
                                     <activity.icon size={20} />
                                 </div>

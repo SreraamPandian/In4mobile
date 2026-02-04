@@ -200,7 +200,7 @@ const EmployeeAttendanceReport = () => {
                                         {emp.coordinates && (
                                             <button
                                                 onClick={() => handleViewOnMap(emp.coordinates)}
-                                                className="py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1 text-sm"
+                                                className="py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-1 text-sm"
                                             >
                                                 <MapPin size={16} />
                                                 <span>Map View</span>

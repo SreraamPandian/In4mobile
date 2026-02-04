@@ -18,8 +18,8 @@ const PayslipAvailable = () => {
             <div className="px-6 py-6">
                 <Card className="dark:bg-gray-800">
                     <div className="flex items-center space-x-4 mb-4">
-                        <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
-                            <FileText size={32} className="text-blue-600" />
+                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                            <FileText size={32} className="text-primary" />
                         </div>
                         <div>
                             <h2 className="font-bold text-lg">Payslip for December 2025</h2>

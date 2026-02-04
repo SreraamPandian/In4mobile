@@ -9,21 +9,21 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#6366F1', // Modern Purple/Indigo
-          dark: '#4F46E5',
-          light: '#818CF8',
+          DEFAULT: '#6d56a4', // User defined purple
+          dark: '#58458c',
+          light: '#826eb3',
         },
         success: '#10B981', // Success Green
         warning: '#F59E0B', // Warning Orange
         error: '#EF4444',   // Error Red
-        background: '#F9FAFB', // Very light gray
+        background: '#FAFAFA', // Neutral 50 (Warmer white)
         surface: '#FFFFFF',    // Pure white
         text: {
-          main: '#111827',     // Almost black
-          secondary: '#6B7280', // Medium gray
-          muted: '#9CA3AF',    // Light gray
+          main: '#171717',     // Neutral 900
+          secondary: '#737373', // Neutral 500
+          muted: '#A3A3A3',    // Neutral 400
         },
-        border: '#E5E7EB',     // Light gray
+        border: '#E5E5E5',     // Neutral 200
       },
       fontFamily: {
         sans: ['Inter', 'Poppins', 'sans-serif'],

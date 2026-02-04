@@ -32,7 +32,7 @@ const HelpSupport = () => {
                     <h3 className="font-bold text-sm text-text-secondary uppercase tracking-wider mb-3 px-1">Contact Us</h3>
                     <div className="space-y-3">
                         <Card className="flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer">
-                            <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                            <div className="p-3 bg-primary/10 text-primary rounded-xl">
                                 <Mail size={20} />
                             </div>
                             <div className="flex-1">

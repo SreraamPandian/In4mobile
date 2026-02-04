@@ -6,6 +6,7 @@ import Splash from './pages/Splash';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Attendance from './pages/Attendance';
+import AttendanceCalendar from './pages/AttendanceCalendar';
 import ApplyLeave from './pages/ApplyLeave';
 import Profile from './pages/Profile';
 import Payslip from './pages/Payslip';
@@ -53,6 +54,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/attendance" element={<Attendance />} />
+            <Route path="/attendance-calendar" element={<AttendanceCalendar />} />
             <Route path="/employee-attendance-report" element={<EmployeeAttendanceReport />} />
             <Route path="/monthly-attendance-report" element={<MonthlyAttendanceReport />} />
             <Route path="/employee-list" element={<EmployeeList />} />

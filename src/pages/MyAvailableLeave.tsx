@@ -7,7 +7,7 @@ const MyAvailableLeave = () => {
     const navigate = useNavigate();
 
     const leaveTypes = [
-        { type: 'Casual Leave', available: 8, total: 12, used: 4, color: 'bg-blue-500' },
+        { type: 'Casual Leave', available: 8, total: 12, used: 4, color: 'bg-primary' },
         { type: 'Sick Leave', available: 5, total: 10, used: 5, color: 'bg-red-500' },
         { type: 'Earned Leave', available: 15, total: 20, used: 5, color: 'bg-green-500' },
         { type: 'Comp Off', available: 2, total: 5, used: 3, color: 'bg-purple-500' },

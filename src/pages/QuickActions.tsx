@@ -31,7 +31,7 @@ const QuickActions = () => {
       icon: LogOut,
       title: 'Leave',
       subtitle: 'Apply Leave & View Reports',
-      color: 'bg-indigo-50 text-indigo-600',
+      color: 'bg-primary/10 text-primary',
       hasDropdown: true,
       subItems: [
         { title: 'Apply Leave', path: '/apply-leave', icon: FileText },
@@ -56,7 +56,7 @@ const QuickActions = () => {
       icon: ArrowLeftRight,
       title: 'Comp Off',
       subtitle: 'Apply Comp Off & View Reports',
-      color: 'bg-blue-50 text-blue-600',
+      color: 'bg-primary/10 text-primary',
       hasDropdown: true,
       subItems: [
         { title: 'Apply Comp Off', path: '/apply-compoff', icon: FileText },

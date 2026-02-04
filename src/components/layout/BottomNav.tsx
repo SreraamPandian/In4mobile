@@ -74,8 +74,8 @@ const BottomNav = () => {
                   {item.isCenter ? (
                     <div className="flex justify-center">
                       <div className="relative -mt-10">
-                        <div className="absolute inset-0 bg-indigo-500/40 rounded-full blur-xl"></div>
-                        <div className="relative w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full shadow-2xl shadow-indigo-500/40 flex items-center justify-center border-4 border-white/20 backdrop-blur-sm hover:scale-105 active:scale-95 transition-transform">
+                        <div className="absolute inset-0 bg-primary/40 rounded-full blur-xl"></div>
+                        <div className="relative w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-2xl shadow-primary/40 flex items-center justify-center border-4 border-white/20 backdrop-blur-sm hover:scale-105 active:scale-95 transition-transform">
                           {item.type === 'fontawesome' && (
                             <FontAwesomeIcon icon={item.icon as IconDefinition} className="text-white text-2xl" />
                           )}
@@ -93,7 +93,7 @@ const BottomNav = () => {
                               strokeWidth={isActive ? 2.5 : 2}
                               className={cn(
                                 "transition-colors duration-200",
-                                isActive ? "text-indigo-600" : "text-gray-500"
+                                isActive ? "text-primary" : "text-gray-500"
                               )}
                             />
                           );
@@ -101,7 +101,7 @@ const BottomNav = () => {
                       </div>
                       <span className={cn(
                         "text-[10px] font-medium transition-colors duration-200",
-                        isActive ? "text-indigo-600" : "text-gray-500"
+                        isActive ? "text-primary" : "text-gray-500"
                       )}>
                         {item.label}
                       </span>
