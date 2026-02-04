@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, Sun, Moon, Sunrise, Sunset, LogIn, LogOut } from 'lucide-react';
+import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, Sun, Moon, Sunrise, Sunset, LogIn, LogOut, X } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ const Dashboard = () => {
     const [checkInTime, setCheckInTime] = useState<string | null>(null);
     const [checkOutTime, setCheckOutTime] = useState<string | null>(null);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [showPunchRequestModal, setShowPunchRequestModal] = useState(false);
+    const [punchType, setPunchType] = useState('Check In');
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -163,6 +165,19 @@ const Dashboard = () => {
                             )}
                         </div>
 
+                        {/* Forgot to Check In Link */}
+                        <div className="text-center -mt-6 mb-8">
+                            <button
+                                onClick={() => setShowPunchRequestModal(true)}
+                                className="flex items-center justify-center space-x-2 mx-auto text-primary hover:text-primary-dark transition-colors"
+                            >
+                                <span className="text-sm font-medium">Forgot to check in?</span>
+                                <div className="p-1 rounded-full bg-primary/10">
+                                    <Clock size={12} className="text-primary" />
+                                </div>
+                            </button>
+                        </div>
+
                         {/* Attendance Details */}
                         {(checkInTime || checkOutTime) && (
                             <div className="p-4 bg-gray-50 rounded-xl space-y-3">
@@ -254,6 +269,96 @@ const Dashboard = () => {
                     </Card>
                 </motion.div>
             </motion.div>
+
+            {/* Punch Request Modal */}
+            {showPunchRequestModal && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl"
+                    >
+                        <div className="flex justify-between items-start p-6 pb-2">
+                            <div>
+                                <h3 className="text-xl font-bold text-text-main">Punch Request</h3>
+                                <p className="text-xs text-text-muted mt-1">Submit a manual attendance entry</p>
+                            </div>
+                            <button onClick={() => setShowPunchRequestModal(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                                <X size={20} className="text-text-secondary" />
+                            </button>
+                        </div>
+
+                        <div className="p-6 pt-4 space-y-5">
+                            {/* Punch Type */}
+                            <div>
+                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">PUNCH TYPE</label>
+                                <div className="flex p-1 bg-gray-100 rounded-xl">
+                                    <button
+                                        onClick={() => setPunchType('Check In')}
+                                        className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${punchType === 'Check In' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        Check In
+                                    </button>
+                                    <button
+                                        onClick={() => setPunchType('Check Out')}
+                                        className={`flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all ${punchType === 'Check Out' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        Check Out
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Date */}
+                            <div>
+                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">DATE</label>
+                                <div className="relative">
+                                    <input
+                                        type="date"
+                                        className="w-full p-4 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        defaultValue={new Date().toISOString().split('T')[0]}
+                                    />
+                                    <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                </div>
+                            </div>
+
+                            {/* Time */}
+                            <div>
+                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">TIME</label>
+                                <div className="relative">
+                                    <input
+                                        type="time"
+                                        className="w-full p-4 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        defaultValue="09:00"
+                                    />
+                                    <Clock className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                </div>
+                            </div>
+
+                            {/* Note */}
+                            <div>
+                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">NOTE</label>
+                                <textarea
+                                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-text-main font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none h-24"
+                                    placeholder="Add a note..."
+                                    defaultValue="forgot it"
+                                ></textarea>
+                            </div>
+
+                            {/* Submit Button */}
+                            <button
+                                onClick={() => {
+                                    setShowPunchRequestModal(false);
+                                    // Here you would typically handle the submission
+                                }}
+                                className="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary-dark shadow-lg shadow-primary/25 active:scale-[0.98] transition-all"
+                            >
+                                Submit Punch Request
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
         </div>
     );
 };
