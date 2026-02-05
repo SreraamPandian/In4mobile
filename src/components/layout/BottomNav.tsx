@@ -55,7 +55,7 @@ const BottomNav = () => {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300",
+        "w-full z-40 transition-transform duration-300",
         isVisible ? "translate-y-0" : "translate-y-full"
       )}
     >

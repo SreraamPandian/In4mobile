@@ -14,7 +14,7 @@ const MobileLayout = () => {
 
   return (
     <div className="min-h-screen bg-background text-text-main font-sans antialiased overflow-x-hidden">
-      <div className="max-w-md mx-auto h-screen relative bg-background shadow-2xl flex flex-col">
+      <div className="w-full md:max-w-lg mx-auto h-[100dvh] relative bg-background shadow-2xl flex flex-col">
         {showTopBar && <TopBar />}
         <main className={`flex-1 overflow-y-auto pb-24 scrollbar-hide ${showTopBar ? 'pt-28' : ''}`}>
           <Outlet />

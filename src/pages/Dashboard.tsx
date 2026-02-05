@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, Sun, Moon, Sunrise, Sunset, LogIn, LogOut, X } from 'lucide-react';
-import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, LogIn, LogOut, X } from 'lucide-react';
+import Card from '../components/ui/Card';
+import TimeThemeIcon from '../components/ui/TimeThemeIcon';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -30,45 +31,6 @@ const Dashboard = () => {
         const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         setCheckOutTime(time);
         setIsCheckedIn(false);
-    };
-
-    const getTimeIcon = () => {
-        const hour = currentTime.getHours();
-
-        if (hour >= 6 && hour < 12) {
-            // Sunrise - Soft orange glow
-            return (
-                <div className="relative">
-                    <div className="absolute inset-0 bg-warning/30 blur-md rounded-full"></div>
-                    <Sunrise size={24} className="relative text-warning animate-pulse-slow" />
-                </div>
-            );
-        }
-        if (hour >= 12 && hour < 17) {
-            // Sun - Bright yellow ray effect
-            return (
-                <div className="relative">
-                    <div className="absolute inset-0 bg-yellow-400/20 blur-lg rounded-full"></div>
-                    <Sun size={24} className="relative text-yellow-500 animate-[spin_10s_linear_infinite]" />
-                </div>
-            );
-        }
-        if (hour >= 17 && hour < 20) {
-            // Sunset - Deep orange/red
-            return (
-                <div className="relative">
-                    <div className="absolute inset-0 bg-orange-500/20 blur-md rounded-full"></div>
-                    <Sunset size={24} className="relative text-orange-600" />
-                </div>
-            );
-        }
-        // Moon - Cool ethereal glow
-        return (
-            <div className="relative">
-                <div className="absolute inset-0 bg-primary/30 blur-md rounded-full"></div>
-                <Moon size={24} className="relative text-primary fill-primary/20" />
-            </div>
-        );
     };
 
     // Animation variants
@@ -116,7 +78,7 @@ const Dashboard = () => {
                                     <p className="text-xl font-mono font-semibold text-text-main">
                                         {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                     </p>
-                                    {getTimeIcon()}
+                                    <TimeThemeIcon hour={currentTime.getHours()} />
                                 </div>
                             </div>
                         </div>
