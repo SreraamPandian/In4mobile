@@ -85,8 +85,9 @@ const EmployeeAttendanceReport = () => {
         setSelectedEmployee(emp);
     };
 
-    const handleViewOnMap = (coords: { lat: number, lng: number }) => {
-        window.open(`https://www.google.com/maps?q=${coords.lat},${coords.lng}`, '_blank');
+    const handleViewOnMap = (coords: { lat: number, lng: number }, locationName: string = '') => {
+        const query = encodeURIComponent(locationName);
+        window.open(`https://www.google.com/maps?q=${coords.lat},${coords.lng}+(${query})`, '_blank');
     };
 
     return (
@@ -199,7 +200,7 @@ const EmployeeAttendanceReport = () => {
                                         </button>
                                         {emp.coordinates && (
                                             <button
-                                                onClick={() => handleViewOnMap(emp.coordinates)}
+                                                onClick={() => handleViewOnMap(emp.coordinates, emp.location)}
                                                 className="py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-1 text-sm"
                                             >
                                                 <MapPin size={16} />
@@ -277,7 +278,7 @@ const EmployeeAttendanceReport = () => {
                                                     </p>
                                                 </div>
                                                 <button
-                                                    onClick={() => handleViewOnMap(log.coords)}
+                                                    onClick={() => handleViewOnMap(log.coords, log.location)}
                                                     className="px-3 py-1 bg-primary text-white rounded-lg text-xs font-semibold hover:bg-primary-dark transition-colors"
                                                 >
                                                     Map
