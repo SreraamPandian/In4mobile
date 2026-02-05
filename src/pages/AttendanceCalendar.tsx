@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isToday } from 'date-fns';
@@ -22,6 +22,7 @@ const AttendanceCalendar = () => {
         { date: '2026-02-07', status: 'Half Day' },
         { date: '2026-02-08', status: 'Week Off' },
         { date: '2026-02-14', status: 'Holiday' }, // Added Holiday
+        { date: '2026-02-12', status: 'Work From Home' },
     ];
 
     const getStatus = (date: Date) => {
@@ -29,16 +30,31 @@ const AttendanceCalendar = () => {
         return attendanceData.find(d => d.date === dateStr)?.status || 'Future';
     };
 
-    const getStatusColor = (status: string) => {
+    const getStatusLabel = (status: string) => {
         switch (status) {
-            case 'Present': return 'bg-success text-white';
-            case 'Absent': return 'bg-error text-white';
-            case 'Leave': return 'bg-rose-500 text-white'; // Changed to Rose
-            case 'Half Day': return 'bg-amber-400 text-white'; // Changed to Amber
-            case 'Holiday': return 'bg-blue-500 text-white'; // Changed to Blue
-            case 'Week Off': return 'bg-gray-200 text-gray-400';
-            case 'Future': return 'bg-transparent text-text-main';
-            default: return 'bg-transparent text-text-main';
+            case 'Present': return 'PP';
+            case 'Absent': return 'AA';
+            case 'Leave': return 'LV';
+            case 'Half Day': return 'AP'; // Changed to AP
+            case 'Holiday': return 'HO';
+            case 'Week Off': return 'WO';
+            case 'Work From Home': return 'WFM';
+            default: return '';
+        }
+    };
+
+    const getStatusStyle = (status: string) => {
+        // Updated to use text colors only, no backgrounds
+        switch (status) {
+            case 'Present': return 'text-green-600';
+            case 'Absent': return 'text-red-600';
+            case 'Leave': return 'text-rose-600';
+            case 'Half Day': return 'text-amber-600';
+            case 'Holiday': return 'text-blue-600';
+            case 'Week Off': return 'text-gray-400';
+            case 'Work From Home': return 'text-purple-600';
+            case 'Future': return 'text-gray-300';
+            default: return 'text-gray-300';
         }
     };
 
@@ -71,8 +87,6 @@ const AttendanceCalendar = () => {
                     </button>
                 </div>
 
-                {/* Legend - 3x3 Grid (3 columns, 2 rows for 6 items) */}
-
 
                 {/* Calendar Grid */}
                 <motion.div
@@ -84,7 +98,7 @@ const AttendanceCalendar = () => {
                     {/* Week Days Header */}
                     <div className="grid grid-cols-7 border-b border-gray-100 bg-gray-50">
                         {weekDays.map(day => (
-                            <div key={day} className="py-3 text-center text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                            <div key={day} className="py-3 text-center text-[10px] font-bold text-text-secondary uppercase tracking-wider">
                                 {day}
                             </div>
                         ))}
@@ -94,18 +108,29 @@ const AttendanceCalendar = () => {
                     <div className="grid grid-cols-7">
                         {/* Offset for starting day */}
                         {Array.from({ length: startOfMonth(currentMonth).getDay() }).map((_, i) => (
-                            <div key={`empty-${i}`} className="h-14 bg-gray-50/30 border-b border-r border-gray-50"></div>
+                            <div key={`empty-${i}`} className="h-16 bg-gray-50/30 border-b border-r border-gray-50 last:border-r-0"></div>
                         ))}
 
                         {calendarDays.map((day) => {
                             const status = getStatus(day);
+                            const code = getStatusLabel(status);
                             const isTodayDate = isToday(day);
 
                             return (
-                                <div key={day.toString()} className="h-14 border-b border-r border-gray-50 relative flex items-center justify-center">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold transition-all ${getStatusColor(status)} ${isTodayDate ? 'ring-2 ring-primary ring-offset-2' : ''}`}>
+                                <div key={day.toString()} className="h-16 border-b border-r border-gray-100 relative p-1 group">
+                                    {/* Date Number */}
+                                    <span className={`absolute top-1 right-2 text-[10px] font-bold ${isTodayDate ? 'text-primary' : 'text-gray-400'}`}>
                                         {format(day, 'd')}
-                                    </div>
+                                    </span>
+
+                                    {/* Status Code - Text Only */}
+                                    {status !== 'Future' ? (
+                                        <div className={`w-full h-full flex items-center justify-center text-sm font-medium transition-all ${getStatusStyle(status)} ${isTodayDate ? 'bg-primary/5 rounded-lg' : ''}`}>
+                                            {code}
+                                        </div>
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center"></div>
+                                    )}
                                 </div>
                             );
                         })}
@@ -117,15 +142,15 @@ const AttendanceCalendar = () => {
                     <h3 className="text-lg font-bold mb-4 opacity-90">Monthly Summary</h3>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                            <p className="text-xs opacity-70 mb-1">Present</p>
+                            <p className="text-xs opacity-70 mb-1">Present (PP)</p>
                             <p className="text-2xl font-bold">22</p>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                            <p className="text-xs opacity-70 mb-1">Absent</p>
+                            <p className="text-xs opacity-70 mb-1">Absent (AA)</p>
                             <p className="text-2xl font-bold">1</p>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
-                            <p className="text-xs opacity-70 mb-1">Leaves</p>
+                            <p className="text-xs opacity-70 mb-1">Leaves (LV)</p>
                             <p className="text-2xl font-bold">2</p>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3">
@@ -135,15 +160,41 @@ const AttendanceCalendar = () => {
                     </div>
                 </div>
 
-                {/* Legend - 3x3 Grid (3 columns, 2 rows for 6 items) */}
-                <div className="grid grid-cols-3 gap-3 text-xs justify-items-center sm:justify-items-start">
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-success"></div><span>Present</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-error"></div><span>Absent</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-rose-500"></div><span>Leave</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-amber-400"></div><span>Half Day</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-blue-500"></div><span>Holiday</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-gray-200"></div><span>Week Off</span></div>
+                {/* Legend - Updated with Codes - Moved to Bottom */}
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-border">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Legends</h3>
+                    <div className="grid grid-cols-3 gap-3 text-xs">
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-green-600">PP</span>
+                            <span className="text-gray-600 font-medium">Present</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-red-600">AA</span>
+                            <span className="text-gray-600 font-medium">Absent</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-rose-600">LV</span>
+                            <span className="text-gray-600 font-medium">Leave</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-amber-600">AP</span>
+                            <span className="text-gray-600 font-medium">Half Day</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-blue-600">HO</span>
+                            <span className="text-gray-600 font-medium">Holiday</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-gray-400">WO</span>
+                            <span className="text-gray-600 font-medium">Week Off</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span className="w-8 flex justify-center font-medium text-purple-600">WFM</span>
+                            <span className="text-gray-600 font-medium">Work From Home</span>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     );

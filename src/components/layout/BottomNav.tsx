@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, DollarSign, Calendar, User, LucideIcon } from 'lucide-react';
+import { Home, DollarSign, Calendar, User, LucideIcon, LayoutGrid } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonRunning, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '../../lib/utils';
@@ -48,7 +48,7 @@ const BottomNav = () => {
   const navItems: NavItem[] = [
     { icon: Home, label: 'Home', path: '/dashboard', type: 'lucide' },
     { icon: Calendar, label: 'Attendance', path: '/attendance', type: 'lucide' },
-    { icon: faPersonRunning, label: 'Actions', path: '/quick-actions', type: 'fontawesome' },
+    { icon: LayoutGrid, label: 'Menu', path: '/quick-actions', type: 'lucide' },
     { icon: User, label: 'Profile', path: '/settings', type: 'lucide' },
   ];
 

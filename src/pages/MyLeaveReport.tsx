@@ -55,9 +55,9 @@ const MyLeaveReport = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center space-x-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg hover:bg-primary/20 transition-colors"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    alert('Opening attachment: Medical Certificate.pdf');
+                                                onClick={() => {
+                                                    // Allow default behavior (opening link)
+                                                    console.log('Opening attachment:', item.attachmentUrl);
                                                 }}
                                             >
                                                 <Paperclip size={12} />

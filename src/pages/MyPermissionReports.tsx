@@ -55,7 +55,7 @@ const MyPermissionReports = () => {
                                                 rel="noopener noreferrer"
                                                 className="flex items-center space-x-2 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors"
                                                 onClick={() => {
-                                                    // Allow default link open behavior
+                                                    console.log('Opening attachment for permission');
                                                 }}
                                             >
                                                 <Paperclip size={14} />
