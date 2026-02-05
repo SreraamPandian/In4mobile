@@ -6,7 +6,7 @@ const TopBar = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-border px-6 py-6 flex items-center justify-between">
+        <div className="fixed top-0 left-0 right-0 z-30 bg-surface/95 backdrop-blur-md border-b border-border px-6 py-6 flex items-center justify-between max-w-md mx-auto">
             <div className="flex items-center space-x-4">
                 <button onClick={() => navigate('/profile')} className="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-purple-400 p-[3px]">
                     <img

@@ -1,22 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, CheckCircle, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle, X, Paperclip } from 'lucide-react';
 import Card from '../components/ui/Card';
 
 const ManagerPermissionApprovals = () => {
     const navigate = useNavigate();
 
     const permissionRequests = [
-        { employee: 'John Doe', date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment' },
-        { employee: 'Jane Smith', date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work' },
-        { employee: 'Mike Johnson', date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Pending', reason: 'Personal work' },
+        { employee: 'John Doe', date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment', attachmentUrl: 'https://example.com/doc.pdf' },
+        { employee: 'Jane Smith', date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work', attachmentUrl: null },
+        { employee: 'Mike Johnson', date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Pending', reason: 'Personal work', attachmentUrl: 'https://example.com/letter.pdf' },
     ];
 
-    const handleApprove = (employee: string) => {
-        alert(`Approved permission for ${employee}`);
+    const handleApprove = (_employee: string) => {
+        // Approve logic
     };
 
-    const handleReject = (employee: string) => {
-        alert(`Rejected permission for ${employee}`);
+    const handleReject = (_employee: string) => {
+        // Reject logic
     };
 
     return (
@@ -34,8 +34,8 @@ const ManagerPermissionApprovals = () => {
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-base">{permission.employee}</h3>
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${permission.status === 'Approved' ? 'bg-success/10 text-success' :
-                                    permission.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                        'bg-warning/10 text-warning'
+                                permission.status === 'Rejected' ? 'bg-error/10 text-error' :
+                                    'bg-warning/10 text-warning'
                                 }`}>
                                 {permission.status}
                             </span>
@@ -57,6 +57,19 @@ const ManagerPermissionApprovals = () => {
                                 <span className="text-text-secondary block mb-1">Reason:</span>
                                 <p className="font-medium">{permission.reason}</p>
                             </div>
+                            {permission.attachmentUrl && (
+                                <div className="pt-1">
+                                    <a
+                                        href={permission.attachmentUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center space-x-2 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors"
+                                    >
+                                        <Paperclip size={14} />
+                                        <span>View Attachment</span>
+                                    </a>
+                                </div>
+                            )}
                         </div>
                         {permission.status === 'Pending' && (
                             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border">

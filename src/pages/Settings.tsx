@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Key } from 'lucide-react';
+import { LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Key, Award } from 'lucide-react';
 import Card from '../components/ui/Card';
 
 const Settings = () => {
@@ -22,7 +22,7 @@ const Settings = () => {
                     <div className="flex justify-between items-start">
                         <div>
                             <h1 className="text-2xl font-bold text-text-main">Sriram</h1>
-                            <p className="text-text-secondary font-medium">Product Manager</p>
+                            <p className="text-text-secondary font-medium">Engineer</p>
                             <p className="text-xs text-text-muted mt-1">ID: EMP001</p>
                         </div>
                     </div>
@@ -69,21 +69,33 @@ const Settings = () => {
 
                 <Card className="space-y-4">
                     <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-2">Work Details</h3>
+
                     <div className="flex items-center space-x-3 text-sm">
                         <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
                             <Briefcase size={16} />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-text-main font-medium">Engineering Dept</span>
-                            <span className="text-xs text-text-muted">Full Time</span>
+                            <span className="text-text-main font-medium">Department</span>
+                            <span className="text-xs text-text-muted">Engineering</span>
                         </div>
                     </div>
+
+                    <div className="flex items-center space-x-3 text-sm">
+                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                            <Award size={16} />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-text-main font-medium">Designation</span>
+                            <span className="text-xs text-text-muted">Engineer</span>
+                        </div>
+                    </div>
+
                     <div className="flex items-center space-x-3 text-sm">
                         <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center text-teal-600">
                             <User size={16} />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-text-main font-medium">Reports to Jane Smith</span>
+                            <span className="text-text-main font-medium">Reports to - Jane Smith</span>
                             <span className="text-xs text-text-muted">Joined Jan 2023</span>
                         </div>
                     </div>
@@ -108,7 +120,7 @@ const Settings = () => {
                     <LogOut size={18} />
                     <span>Log Out</span>
                 </button>
-            </div>
+            </div >
         </div >
     );
 };

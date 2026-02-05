@@ -1,22 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, CheckCircle, X } from 'lucide-react';
+import { ArrowLeft, CheckCircle, X, Paperclip } from 'lucide-react';
 import Card from '../components/ui/Card';
 
 const ManagerLeaveApprovals = () => {
     const navigate = useNavigate();
 
     const leaveRequests = [
-        { employee: 'John Doe', leaveType: 'Casual Leave', fromDate: '2026-01-15', toDate: '2026-01-16', days: 2, status: 'Approved', reason: 'Personal work' },
-        { employee: 'Jane Smith', leaveType: 'Sick Leave', fromDate: '2026-01-12', toDate: '2026-01-12', days: 1, status: 'Approved', reason: 'Medical checkup' },
-        { employee: 'Mike Johnson', leaveType: 'Earned Leave', fromDate: '2026-01-20', toDate: '2026-01-22', days: 3, status: 'Pending', reason: 'Family function' },
+        { employee: 'John Doe', leaveType: 'Casual Leave', fromDate: '2026-01-15', toDate: '2026-01-16', days: 2, status: 'Approved', reason: 'Personal work', attachmentUrl: null },
+        { employee: 'Jane Smith', leaveType: 'Sick Leave', fromDate: '2026-01-12', toDate: '2026-01-12', days: 1, status: 'Approved', reason: 'Medical checkup', attachmentUrl: 'https://example.com/med.pdf' },
+        { employee: 'Mike Johnson', leaveType: 'Earned Leave', fromDate: '2026-01-20', toDate: '2026-01-22', days: 3, status: 'Pending', reason: 'Family function', attachmentUrl: 'https://example.com/invitation.pdf' },
     ];
 
-    const handleApprove = (employee: string) => {
-        alert(`Approved leave for ${employee}`);
+    const handleApprove = (_employee: string) => {
+        // Approve logic
     };
 
-    const handleReject = (employee: string) => {
-        alert(`Rejected leave for ${employee}`);
+    const handleReject = (_employee: string) => {
+        // Reject logic
     };
 
     return (
@@ -34,8 +34,8 @@ const ManagerLeaveApprovals = () => {
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-base">{leave.employee}</h3>
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${leave.status === 'Approved' ? 'bg-success/10 text-success' :
-                                    leave.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                        'bg-warning/10 text-warning'
+                                leave.status === 'Rejected' ? 'bg-error/10 text-error' :
+                                    'bg-warning/10 text-warning'
                                 }`}>
                                 {leave.status}
                             </span>
@@ -57,6 +57,19 @@ const ManagerLeaveApprovals = () => {
                                 <span className="text-text-secondary block mb-1">Reason:</span>
                                 <p className="font-medium">{leave.reason}</p>
                             </div>
+                            {leave.attachmentUrl && (
+                                <div className="pt-1">
+                                    <a
+                                        href={leave.attachmentUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center space-x-2 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors"
+                                    >
+                                        <Paperclip size={14} />
+                                        <span>View Attachment</span>
+                                    </a>
+                                </div>
+                            )}
                         </div>
                         {leave.status === 'Pending' && (
                             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border">

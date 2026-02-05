@@ -15,11 +15,11 @@ const MonthlyAttendanceReport = () => {
         '2026-01-02': 'WFH',   // Work From Home
         '2026-01-03': 'WO',    // Week Off
         '2026-01-04': 'WO',
-        '2026-01-05': 'AA',    // Full Absent
-        '2026-01-06': 'AA',
-        '2026-01-07': 'AA',
-        '2026-01-08': 'AA',
-        '2026-01-09': 'AA',
+        '2026-01-05': 'PP',    // Present
+        '2026-01-06': 'PP',
+        '2026-01-07': 'PP',
+        '2026-01-08': 'PP',
+        '2026-01-09': 'PP',
         '2026-01-10': 'WO',
         '2026-01-11': 'WO',
         '2026-01-12': 'AA',
@@ -29,19 +29,48 @@ const MonthlyAttendanceReport = () => {
         '2026-01-16': 'AA',
         '2026-01-17': 'WO',
         '2026-01-18': 'WO',
-        '2026-01-19': 'AA',
-        '2026-01-20': 'AA',
-        '2026-01-21': 'AA',
-        '2026-01-22': 'AA',
-        '2026-01-23': 'AA',
+        '2026-01-19': 'PP',
+        '2026-01-20': 'PP',
+        '2026-01-21': 'PP',
+        '2026-01-22': 'PP',
+        '2026-01-23': 'PP',
         '2026-01-24': 'WO',
         '2026-01-25': 'WO',
-        '2026-01-26': 'AA',
-        '2026-01-27': 'AA',
-        '2026-01-28': 'AA',
-        '2026-01-29': 'AA',
-        '2026-01-30': 'AA',
+        '2026-01-26': 'PH',
+        '2026-01-27': 'PP',
+        '2026-01-28': 'PP',
+        '2026-01-29': 'PP',
+        '2026-01-30': 'PP',
         '2026-01-31': 'WO',
+        // February Data
+        '2026-02-01': 'WO',
+        '2026-02-02': 'PP',
+        '2026-02-03': 'PP',
+        '2026-02-04': 'PP',
+        '2026-02-05': 'PP',
+        '2026-02-06': 'PP',
+        '2026-02-07': 'WO',
+        '2026-02-08': 'WO',
+        '2026-02-09': 'PP',
+        '2026-02-10': 'PP',
+        '2026-02-11': 'PP',
+        '2026-02-12': 'PP',
+        '2026-02-13': 'PP',
+        '2026-02-14': 'PH', // Valentine's? xD
+        '2026-02-15': 'WO',
+        '2026-02-16': 'PP',
+        '2026-02-17': 'PP',
+        '2026-02-18': 'PP',
+        '2026-02-19': 'PP',
+        '2026-02-20': 'PP',
+        '2026-02-21': 'WO',
+        '2026-02-22': 'WO',
+        '2026-02-23': 'PP',
+        '2026-02-24': 'PP',
+        '2026-02-25': 'PP',
+        '2026-02-26': 'PP',
+        '2026-02-27': 'PP',
+        '2026-02-28': 'WO',
     };
 
     const monthStart = startOfMonth(currentDate);
@@ -54,9 +83,10 @@ const MonthlyAttendanceReport = () => {
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'PH': return 'text-purple-600';
-            case 'WFH': return 'text-green-600';
+            case 'WFH': return 'text-teal-600';
             case 'WO': return 'text-primary';
             case 'AA': return 'text-red-600';
+            case 'PP': return 'text-green-600';
             default: return 'text-gray-400';
         }
     };
@@ -64,18 +94,20 @@ const MonthlyAttendanceReport = () => {
     const getStatusBadgeColor = (status: string) => {
         switch (status) {
             case 'PH': return 'bg-purple-500';
-            case 'WFH': return 'bg-green-500';
+            case 'WFH': return 'bg-teal-500';
             case 'WO': return 'bg-primary/80';
             case 'AA': return 'bg-red-500';
+            case 'PP': return 'bg-green-500';
             default: return 'bg-gray-400';
         }
     };
 
     const legends = [
-        { code: 'PH', label: 'Public Holiday', color: 'bg-purple-500' },
-        { code: 'WFH', label: 'Full Work From Home', color: 'bg-green-500' },
-        { code: 'WO', label: 'Week Off', color: 'bg-primary/80' },
-        { code: 'AA', label: 'Full Absent', color: 'bg-red-500' },
+        { code: 'PP', label: 'Present', color: 'bg-green-500', borderColor: 'border-green-200' },
+        { code: 'PH', label: 'Public Holiday', color: 'bg-purple-500', borderColor: 'border-purple-200' },
+        { code: 'WFH', label: 'Full Work From Home', color: 'bg-teal-500', borderColor: 'border-teal-200' },
+        { code: 'WO', label: 'Week Off', color: 'bg-primary/80', borderColor: 'border-indigo-200' },
+        { code: 'AA', label: 'Full Absent', color: 'bg-red-500', borderColor: 'border-red-200' },
     ];
 
     return (
@@ -136,14 +168,16 @@ const MonthlyAttendanceReport = () => {
                         const status = attendanceData[dateStr];
                         const dayNum = format(day, 'd');
 
+                        const isToday = new Date().toISOString().split('T')[0] === dateStr;
+
                         return (
                             <div
                                 key={dateStr}
-                                className="aspect-square rounded-xl border-2 border-gray-200 bg-white flex flex-col items-center justify-center p-1 transition-all hover:shadow-lg"
+                                className={`aspect-square rounded-xl border-2 ${status ? 'border-gray-100' : 'border-gray-50'} bg-white flex flex-col items-center justify-center p-1 transition-all hover:shadow-lg relative overflow-hidden`}
                             >
-                                <span className="text-base font-bold text-gray-600">{dayNum}</span>
+                                <span className="text-base font-bold text-gray-700 z-10">{dayNum}</span>
                                 {status && (
-                                    <span className={`text-[10px] font-bold mt-0.5 ${getStatusColor(status)}`}>{status}</span>
+                                    <span className={`text-[10px] font-bold uppercase tracking-wider mt-1 ${getStatusColor(status)}`}>{status}</span>
                                 )}
                             </div>
                         );
@@ -156,7 +190,7 @@ const MonthlyAttendanceReport = () => {
                     <div className="grid grid-cols-2 gap-3">
                         {legends.map((legend) => (
                             <div key={legend.code} className="flex items-center space-x-3 p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
-                                <div className="w-10 h-10 rounded-xl border-2 border-gray-200 bg-white flex items-center justify-center">
+                                <div className={`w-10 h-10 rounded-xl border-2 bg-gray-50 flex items-center justify-center ${legend.borderColor}`}>
                                     <span className={`font-bold text-sm ${getStatusColor(legend.code)}`}>{legend.code}</span>
                                 </div>
                                 <div className="flex-1">

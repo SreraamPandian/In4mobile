@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, FileText, Calendar } from 'lucide-react';
+import { ArrowLeft, FileText, Calendar, Paperclip, Eye } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ReportFilter from '../components/ReportFilter';
 
@@ -11,12 +11,11 @@ const MyLeaveReport = () => {
     const handleGenerateReport = (startDate: string, endDate: string) => {
         // Mock data - in real app, fetch from API
         const mockData = [
-            { date: '2026-01-15', type: 'Casual Leave', days: 1, status: 'Approved' },
-            { date: '2025-12-20', type: 'Sick Leave', days: 2, status: 'Approved' },
-            { date: '2025-11-10', type: 'Earned Leave', days: 3, status: 'Rejected' },
+            { date: '2026-01-15', type: 'Casual Leave', days: 1, status: 'Approved', attachmentUrl: null },
+            { date: '2025-12-20', type: 'Sick Leave', days: 2, status: 'Approved', attachmentUrl: 'https://example.com/medical_cert.pdf' },
+            { date: '2025-11-10', type: 'Earned Leave', days: 3, status: 'Rejected', attachmentUrl: null },
         ];
         setReportData(mockData);
-        alert(`Generating report from ${startDate} to ${endDate}`);
     };
 
     return (
@@ -43,11 +42,29 @@ const MyLeaveReport = () => {
                                             <span className="font-semibold text-sm">{item.date}</span>
                                         </div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'Approved' ? 'bg-success/10 text-success' :
-                                                item.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                                    'bg-warning/10 text-warning'
+                                            item.status === 'Rejected' ? 'bg-error/10 text-error' :
+                                                'bg-warning/10 text-warning'
                                             }`}>{item.status}</span>
                                     </div>
-                                    <p className="text-sm text-text-secondary">{item.type} - {item.days} day(s)</p>
+                                    <div className="flex justify-between items-end">
+                                        <p className="text-sm text-text-secondary">{item.type} - {item.days} day(s)</p>
+
+                                        {item.attachmentUrl && (
+                                            <a
+                                                href={item.attachmentUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center space-x-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg hover:bg-primary/20 transition-colors"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    alert('Opening attachment: Medical Certificate.pdf');
+                                                }}
+                                            >
+                                                <Paperclip size={12} />
+                                                <span>View File</span>
+                                            </a>
+                                        )}
+                                    </div>
                                 </Card>
                             ))}
                         </div>

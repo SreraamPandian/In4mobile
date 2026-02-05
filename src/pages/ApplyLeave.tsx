@@ -4,12 +4,14 @@ import { Calendar as CalendarIcon, Clock, ArrowLeft, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import FileUpload from '../components/ui/FileUpload';
 
 const ApplyLeave = () => {
     const navigate = useNavigate();
     const [leaveType, setLeaveType] = useState('casual');
     const [duration, setDuration] = useState('single');
     const [session, setSession] = useState('full');
+    const [attachment, setAttachment] = useState<File | null>(null);
 
     return (
         <div className="pb-8">
@@ -34,13 +36,13 @@ const ApplyLeave = () => {
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setLeaveType(item.id)}
                             className={`flex-shrink-0 w-32 p-4 rounded-xl border-2 text-left transition-all ${leaveType === item.id
-                                    ? `ring-2 ring-primary ring-offset-2 ${item.color}`
-                                    : 'bg-surface border-border text-text-secondary'
+                                ? `ring-2 ring-primary ring-offset-2 ${item.color}`
+                                : 'bg-surface border-border text-text-secondary'
                                 }`}
                         >
                             <span className="text-xs font-medium opacity-80 block mb-1">{item.type} Leave</span>
                             <span className="text-2xl font-bold">{item.count}</span>
-                            <span className="text-[10px] opacity-60 block mt-1">Available</span>
+                            <span className="text-xs opacity-60 block mt-1">Available</span>
                         </motion.button>
                     ))}
                 </div>
@@ -104,8 +106,8 @@ const ApplyLeave = () => {
                                         key={val}
                                         onClick={() => setSession(val)}
                                         className={`py-2 px-2 text-xs font-medium rounded-lg border transition-all ${session === val
-                                                ? 'bg-primary/10 border-primary text-primary'
-                                                : 'bg-surface border-border text-text-secondary hover:bg-gray-50'
+                                            ? 'bg-primary/10 border-primary text-primary'
+                                            : 'bg-surface border-border text-text-secondary hover:bg-gray-50'
                                             }`}
                                     >
                                         {s}
@@ -129,7 +131,15 @@ const ApplyLeave = () => {
                     </div>
                 </div>
 
-                <div className="pt-4">
+                {/* File Upload */}
+                <div>
+                    <FileUpload
+                        label="Attach Document (Medical Certificate, etc.)"
+                        onFileSelect={setAttachment}
+                    />
+                </div>
+
+                <div className="pt-4 pb-8">
                     <Button fullWidth size="lg" className="shadow-lg shadow-primary/20">
                         SUBMIT REQUEST
                     </Button>

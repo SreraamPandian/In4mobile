@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar, Paperclip } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ReportFilter from '../components/ReportFilter';
 
@@ -8,13 +8,12 @@ const MyPermissionReports = () => {
     const navigate = useNavigate();
     const [reportData, setReportData] = useState<any[]>([]);
 
-    const handleGenerateReport = (startDate: string, endDate: string) => {
+    const handleGenerateReport = (_startDate: string, _endDate: string) => {
         const mockData = [
-            { date: '2026-01-10', time: '10:00 AM - 11:30 AM', reason: 'Doctor appointment', status: 'Approved' },
-            { date: '2025-12-15', time: '02:00 PM - 03:00 PM', reason: 'Personal work', status: 'Pending' },
+            { date: '2026-01-10', time: '10:00 AM - 11:30 AM', reason: 'Doctor appointment', status: 'Approved', attachmentUrl: 'https://example.com/doc.pdf' },
+            { date: '2025-12-15', time: '02:00 PM - 03:00 PM', reason: 'Personal work', status: 'Pending', attachmentUrl: null },
         ];
         setReportData(mockData);
-        alert(`Generating report from ${startDate} to ${endDate}`);
     };
 
     return (
@@ -46,7 +45,24 @@ const MyPermissionReports = () => {
                                             }`}>{item.status}</span>
                                     </div>
                                     <p className="text-sm text-text-secondary mb-1">{item.time}</p>
-                                    <p className="text-sm text-text-main">{item.reason}</p>
+                                    <p className="text-sm text-text-main mb-3">{item.reason}</p>
+
+                                    {item.attachmentUrl && (
+                                        <div className="flex justify-start">
+                                            <a
+                                                href={item.attachmentUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center space-x-2 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors"
+                                                onClick={() => {
+                                                    // Allow default link open behavior
+                                                }}
+                                            >
+                                                <Paperclip size={14} />
+                                                <span>View Attachment</span>
+                                            </a>
+                                        </div>
+                                    )}
                                 </Card>
                             ))}
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, Sun, Moon, Sunrise, Sunset, LogIn, LogOut, X } from 'lucide-react';
 import Card from '../components/ui/Card';
@@ -97,7 +97,7 @@ const Dashboard = () => {
             >
                 {/* Check-In Card */}
                 <motion.div variants={item}>
-                    <Card className={`relative overflow-hidden transition-all duration-500 ${isCheckedIn ? 'bg-success/5 border-success/20' : 'bg-primary/5 border-primary/20'}`}>
+                    <Card className="relative overflow-hidden transition-all duration-500 bg-white border-border">
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <p className="text-sm font-medium text-text-secondary mb-1">
@@ -122,7 +122,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Circular Check In / Out Buttons */}
-                        <div className="flex justify-center items-center mb-6 py-2">
+                        <div className="flex justify-center items-center mb-4 py-2">
                             {!isCheckedIn ? (
                                 <button
                                     onClick={handleCheckIn}
@@ -166,7 +166,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Forgot to Check In Link */}
-                        <div className="text-center -mt-6 mb-8">
+                        <div className="text-center mb-6">
                             <button
                                 onClick={() => setShowPunchRequestModal(true)}
                                 className="flex items-center justify-center space-x-2 mx-auto text-primary hover:text-primary-dark transition-colors"
@@ -223,15 +223,13 @@ const Dashboard = () => {
                             <p className="text-[10px] text-text-muted mt-2">Tap to view calendar</p>
                         </Card>
                         <Card
-                            className="bg-gradient-to-br from-success/5 to-transparent border-success/10 cursor-pointer hover:shadow-md transition-shadow"
+                            className="bg-gradient-to-br from-success/5 to-transparent border-success/10 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center"
                             onClick={() => navigate('/apply-leave')}
                         >
-                            <div className="flex items-center space-x-2 mb-2 text-success">
-                                <Calendar size={18} />
-                                <span className="text-xs font-bold uppercase tracking-wider">Leaves</span>
+                            <div className="flex flex-col items-center justify-center space-y-2 py-6">
+                                <Calendar size={24} className="text-success" />
+                                <span className="text-base font-bold uppercase tracking-wider text-success">Leave</span>
                             </div>
-                            <p className="text-2xl font-bold text-text-main">12 <span className="text-sm font-normal text-text-muted">days</span></p>
-                            <p className="text-xs text-text-secondary mt-1">Remaining balance</p>
                         </Card>
                     </div>
                 </motion.div>

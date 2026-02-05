@@ -72,14 +72,7 @@ const AttendanceCalendar = () => {
                 </div>
 
                 {/* Legend - 3x3 Grid (3 columns, 2 rows for 6 items) */}
-                <div className="grid grid-cols-3 gap-3 text-xs justify-items-center sm:justify-items-start">
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-success"></div><span>Present</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-error"></div><span>Absent</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-rose-500"></div><span>Leave</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-amber-400"></div><span>Half Day</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-blue-500"></div><span>Holiday</span></div>
-                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-gray-200"></div><span>Week Off</span></div>
-                </div>
+
 
                 {/* Calendar Grid */}
                 <motion.div
@@ -140,6 +133,16 @@ const AttendanceCalendar = () => {
                             <p className="text-2xl font-bold">0</p>
                         </div>
                     </div>
+                </div>
+
+                {/* Legend - 3x3 Grid (3 columns, 2 rows for 6 items) */}
+                <div className="grid grid-cols-3 gap-3 text-xs justify-items-center sm:justify-items-start">
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-success"></div><span>Present</span></div>
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-error"></div><span>Absent</span></div>
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-rose-500"></div><span>Leave</span></div>
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-amber-400"></div><span>Half Day</span></div>
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-blue-500"></div><span>Holiday</span></div>
+                    <div className="flex items-center space-x-1"><div className="w-3 h-3 rounded-full bg-gray-200"></div><span>Week Off</span></div>
                 </div>
             </div>
         </div>

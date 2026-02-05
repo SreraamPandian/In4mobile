@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LogOut,
@@ -12,7 +12,9 @@ import {
   CheckCircle2,
   List,
   UserCheck,
-  ClipboardCheck
+  ClipboardCheck,
+  DollarSign,
+  AlertTriangle
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { useNavigate } from 'react-router-dom';
@@ -101,6 +103,15 @@ const QuickActions = () => {
       ]
     },
     {
+      id: 'time-log-report',
+      icon: Clock,
+      title: 'Time Log Report',
+      subtitle: 'View detailed daily punch logs',
+      color: 'bg-indigo-50 text-indigo-600',
+      hasDropdown: false,
+      path: '/time-log-report'
+    },
+    {
       id: 'monthly-report',
       icon: Calendar,
       title: 'Monthly Attendance Report',
@@ -110,6 +121,15 @@ const QuickActions = () => {
       path: '/monthly-attendance-report'
     },
     {
+      id: 'invalid-punch-logs',
+      icon: AlertTriangle,
+      title: 'Invalid Punch Logs',
+      subtitle: 'View rejected or invalid punches',
+      color: 'bg-red-50 text-red-600',
+      hasDropdown: false,
+      path: '/invalid-punch-logs'
+    },
+    {
       id: 'employee-attendance',
       icon: Calendar,
       title: 'Employee Attendance',
@@ -117,6 +137,15 @@ const QuickActions = () => {
       color: 'bg-green-50 text-green-600',
       hasDropdown: false,
       path: '/employee-attendance-report'
+    },
+    {
+      id: 'payslip',
+      icon: DollarSign,
+      title: 'Payslip',
+      subtitle: 'View your monthly payslips',
+      color: 'bg-blue-50 text-blue-600',
+      hasDropdown: false,
+      path: '/payslip'
     },
   ];
 

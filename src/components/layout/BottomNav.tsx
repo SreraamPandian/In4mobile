@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, DollarSign, Calendar, Settings, LucideIcon } from 'lucide-react';
+import { Home, DollarSign, Calendar, User, LucideIcon } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonRunning, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '../../lib/utils';
@@ -48,9 +48,8 @@ const BottomNav = () => {
   const navItems: NavItem[] = [
     { icon: Home, label: 'Home', path: '/dashboard', type: 'lucide' },
     { icon: Calendar, label: 'Attendance', path: '/attendance', type: 'lucide' },
-    { icon: faPersonRunning, label: 'Actions', path: '/quick-actions', isCenter: true, type: 'fontawesome' },
-    { icon: DollarSign, label: 'Payslip', path: '/payslip', type: 'lucide' },
-    { icon: Settings, label: 'Settings', path: '/settings', type: 'lucide' },
+    { icon: faPersonRunning, label: 'Actions', path: '/quick-actions', type: 'fontawesome' },
+    { icon: User, label: 'Profile', path: '/settings', type: 'lucide' },
   ];
 
   return (
@@ -98,6 +97,15 @@ const BottomNav = () => {
                             />
                           );
                         })()}
+                        {item.type === 'fontawesome' && (
+                          <FontAwesomeIcon
+                            icon={item.icon as IconDefinition}
+                            className={cn(
+                              "text-xl transition-colors duration-200",
+                              isActive ? "text-primary" : "text-gray-500"
+                            )}
+                          />
+                        )}
                       </div>
                       <span className={cn(
                         "text-[10px] font-medium transition-colors duration-200",
