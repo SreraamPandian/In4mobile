@@ -29,10 +29,7 @@ const TopBar = () => {
                     <p className="text-xs text-text-muted mt-0.5">{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
                 </div>
             </div>
-            <button className="relative p-3 text-text-secondary hover:bg-background rounded-full transition-colors">
-                <Bell size={28} />
-                <span className="absolute top-3 right-3 w-3 h-3 bg-error rounded-full border-2 border-white"></span>
-            </button>
+
         </div>
     );
 };

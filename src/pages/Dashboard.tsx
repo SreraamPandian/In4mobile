@@ -206,7 +206,6 @@ const Dashboard = () => {
                         {[
                             { title: 'Leave Approved', time: '2 hours ago', type: 'success', icon: CheckCircle2, path: '/leave-approved' },
                             { title: 'Permission Requested', time: 'Yesterday', type: 'warning', icon: Clock, path: '/permission-requested' },
-                            { title: 'Payslip Available', time: '2 days ago', type: 'info', icon: FileText, path: '/payslip-available' },
                         ].map((activity, idx) => (
                             <div
                                 key={idx}
