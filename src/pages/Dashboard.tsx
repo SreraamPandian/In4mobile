@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, ChevronRight, CheckCircle2, Calendar, FileText, LogIn, LogOut, X } from 'lucide-react';
+import { Clock, ChevronRight, CheckCircle2, Calendar, LogIn, LogOut, X, MapPin } from 'lucide-react';
 import Card from '../components/ui/Card';
 import TimeThemeIcon from '../components/ui/TimeThemeIcon';
 
@@ -69,6 +69,12 @@ const Dashboard = () => {
                                     {isCheckedIn ? 'Checked In' : 'Not Checked In'}
                                 </h3>
                             </div>
+                            <button
+                                onClick={() => navigate('/map-view')}
+                                className="p-3 bg-primary/5 text-primary rounded-xl hover:bg-primary/10 transition-colors shadow-sm active:scale-95"
+                            >
+                                <MapPin size={24} />
+                            </button>
                         </div>
 
                         <div className="flex items-center space-x-6 mb-8">
@@ -142,7 +148,7 @@ const Dashboard = () => {
 
                         {/* Attendance Details */}
                         {(checkInTime || checkOutTime) && (
-                            <div className="p-4 bg-gray-50 rounded-xl space-y-3">
+                            <div className="p-4 bg-gray-50 rounded-xl space-y-4">
                                 <h4 className="font-bold text-sm text-gray-700">Today's Attendance</h4>
                                 <div className="grid grid-cols-2 gap-3">
                                     {checkInTime && (
@@ -158,6 +164,14 @@ const Dashboard = () => {
                                         </div>
                                     )}
                                 </div>
+
+                                <button
+                                    onClick={() => navigate('/map-view')}
+                                    className="w-full py-2.5 bg-primary/5 text-primary border border-primary/10 rounded-xl font-bold text-sm flex items-center justify-center space-x-2 hover:bg-primary/10 transition-all active:scale-[0.98]"
+                                >
+                                    <MapPin size={16} />
+                                    <span>View on Map</span>
+                                </button>
                             </div>
                         )}
                     </Card>

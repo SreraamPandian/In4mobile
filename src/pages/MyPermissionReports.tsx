@@ -10,8 +10,8 @@ const MyPermissionReports = () => {
 
     const handleGenerateReport = (_startDate: string, _endDate: string) => {
         const mockData = [
-            { date: '2026-01-10', time: '10:00 AM - 11:30 AM', reason: 'Doctor appointment', status: 'Approved', attachmentUrl: 'https://example.com/doc.pdf' },
-            { date: '2025-12-15', time: '02:00 PM - 03:00 PM', reason: 'Personal work', status: 'Pending', attachmentUrl: null },
+            { date: '2026-01-10', time: '10:00 AM - 11:30 AM', reason: 'Doctor appointment', status: 'Approved', approvedBy: 'Admin (Manager)', attachmentUrl: 'https://example.com/doc.pdf' },
+            { date: '2025-12-15', time: '02:00 PM - 03:00 PM', reason: 'Personal work', status: 'Pending', approvedBy: null, attachmentUrl: null },
         ];
         setReportData(mockData);
     };
@@ -45,7 +45,13 @@ const MyPermissionReports = () => {
                                             }`}>{item.status}</span>
                                     </div>
                                     <p className="text-sm text-text-secondary mb-1">{item.time}</p>
-                                    <p className="text-sm text-text-main mb-3">{item.reason}</p>
+                                    <p className="text-sm text-text-main mb-2">{item.reason}</p>
+
+                                    {item.status === 'Approved' && item.approvedBy && (
+                                        <p className="text-xs font-medium text-text-muted italic mb-3">
+                                            Approved by: <span className="text-text-secondary">{item.approvedBy}</span>
+                                        </p>
+                                    )}
 
                                     {item.attachmentUrl && (
                                         <div className="flex justify-start">
@@ -54,9 +60,6 @@ const MyPermissionReports = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center space-x-2 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors"
-                                                onClick={() => {
-                                                    console.log('Opening attachment for permission');
-                                                }}
                                             >
                                                 <Paperclip size={14} />
                                                 <span>View Attachment</span>

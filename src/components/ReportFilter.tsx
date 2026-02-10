@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { format, startOfMonth, endOfMonth, differenceInDays, parseISO, startOfWeek, endOfWeek } from 'date-fns';
-import { Calendar, ChevronRight } from 'lucide-react';
+import { format, startOfMonth, endOfMonth, differenceInDays, parseISO } from 'date-fns';
+import { ChevronRight } from 'lucide-react';
 import DatePicker from './ui/DatePicker';
 
 interface ReportFilterProps {
@@ -11,7 +11,7 @@ interface ReportFilterProps {
 const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
     const [startDate, setStartDate] = useState(format(startOfMonth(new Date()), 'yyyy-MM-dd'));
     const [endDate, setEndDate] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'));
-    const [selectedTab, setSelectedTab] = useState<'Weekly' | 'Monthly' | 'Custom'>('Custom');
+    const [selectedTab, setSelectedTab] = useState<'Monthly' | 'Custom'>('Custom');
     const [duration, setDuration] = useState(0);
 
     useEffect(() => {
@@ -23,14 +23,11 @@ const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
         }
     }, [startDate, endDate]);
 
-    const handleTabChange = (tab: 'Weekly' | 'Monthly' | 'Custom') => {
+    const handleTabChange = (tab: 'Monthly' | 'Custom') => {
         setSelectedTab(tab);
         const today = new Date();
 
-        if (tab === 'Weekly') {
-            setStartDate(format(startOfWeek(today), 'yyyy-MM-dd'));
-            setEndDate(format(endOfWeek(today), 'yyyy-MM-dd'));
-        } else if (tab === 'Monthly') {
+        if (tab === 'Monthly') {
             setStartDate(format(startOfMonth(today), 'yyyy-MM-dd'));
             setEndDate(format(endOfMonth(today), 'yyyy-MM-dd'));
         }
@@ -41,11 +38,11 @@ const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
             {/* Period Tabs */}
             <div className="bg-gray-100 p-1.5 rounded-2xl flex relative">
                 {/* Active Tab Background Animation - Simplified for now */}
-                {(['Weekly', 'Monthly', 'Custom'] as const).map((tab) => (
+                {(['Monthly', 'Custom'] as const).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => handleTabChange(tab)}
@@ -63,7 +60,7 @@ const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[2rem] p-5 shadow-sm border border-gray-100 space-y-4"
+                className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 space-y-2"
             >
                 <DatePicker
                     label="Start Date"

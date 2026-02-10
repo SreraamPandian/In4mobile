@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, FileText, Calendar, Paperclip, Eye } from 'lucide-react';
+import { ArrowLeft, Calendar, Paperclip } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ReportFilter from '../components/ReportFilter';
 
@@ -8,12 +8,12 @@ const MyLeaveReport = () => {
     const navigate = useNavigate();
     const [reportData, setReportData] = useState<any[]>([]);
 
-    const handleGenerateReport = (startDate: string, endDate: string) => {
+    const handleGenerateReport = (_startDate: string, _endDate: string) => {
         // Mock data - in real app, fetch from API
         const mockData = [
-            { date: '2026-01-15', type: 'Casual Leave', days: 1, status: 'Approved', attachmentUrl: null },
-            { date: '2025-12-20', type: 'Sick Leave', days: 2, status: 'Approved', attachmentUrl: 'https://example.com/medical_cert.pdf' },
-            { date: '2025-11-10', type: 'Earned Leave', days: 3, status: 'Rejected', attachmentUrl: null },
+            { date: '2026-01-15', type: 'Casual Leave', days: 1, status: 'Approved', approvedBy: 'Admin (Manager)', attachmentUrl: null },
+            { date: '2025-12-20', type: 'Sick Leave', days: 2, status: 'Approved', approvedBy: 'Supervisor', attachmentUrl: 'https://example.com/medical_cert.pdf' },
+            { date: '2025-11-10', type: 'Earned Leave', days: 3, status: 'Rejected', approvedBy: null, attachmentUrl: null },
         ];
         setReportData(mockData);
     };
@@ -46,23 +46,27 @@ const MyLeaveReport = () => {
                                                 'bg-warning/10 text-warning'
                                             }`}>{item.status}</span>
                                     </div>
-                                    <div className="flex justify-between items-end">
+                                    <div className="space-y-2">
                                         <p className="text-sm text-text-secondary">{item.type} - {item.days} day(s)</p>
 
+                                        {item.status === 'Approved' && item.approvedBy && (
+                                            <p className="text-xs font-medium text-text-muted italic">
+                                                Approved by: <span className="text-text-secondary">{item.approvedBy}</span>
+                                            </p>
+                                        )}
+
                                         {item.attachmentUrl && (
-                                            <a
-                                                href={item.attachmentUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center space-x-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg hover:bg-primary/20 transition-colors"
-                                                onClick={() => {
-                                                    // Allow default behavior (opening link)
-                                                    console.log('Opening attachment:', item.attachmentUrl);
-                                                }}
-                                            >
-                                                <Paperclip size={12} />
-                                                <span>View File</span>
-                                            </a>
+                                            <div className="flex justify-end pt-1">
+                                                <a
+                                                    href={item.attachmentUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center space-x-1 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg hover:bg-primary/20 transition-colors"
+                                                >
+                                                    <Paperclip size={12} />
+                                                    <span>View File</span>
+                                                </a>
+                                            </div>
                                         )}
                                     </div>
                                 </Card>

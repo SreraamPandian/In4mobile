@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import Card from '../components/ui/Card';
@@ -10,8 +10,8 @@ const MyPunchRequestReport = () => {
 
     const handleGenerateReport = (startDate: string, endDate: string) => {
         const mockData = [
-            { date: '2026-01-08', type: 'Punch In', time: '09:30 AM', reason: 'Forgot to punch', status: 'Approved' },
-            { date: '2025-12-20', type: 'Punch Out', time: '06:15 PM', reason: 'System error', status: 'Pending' },
+            { date: '2026-01-08', type: 'Punch In', time: '09:30 AM', reason: 'Forgot to punch', status: 'Approved', approvedBy: 'Admin (Manager)' },
+            { date: '2025-12-20', type: 'Punch Out', time: '06:15 PM', reason: 'System error', status: 'Pending', approvedBy: null },
         ];
         setReportData(mockData);
         alert(`Generating report from ${startDate} to ${endDate}`);
@@ -41,15 +41,21 @@ const MyPunchRequestReport = () => {
                                             <span className="font-semibold text-sm">{item.date}</span>
                                         </div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'Approved' ? 'bg-success/10 text-success' :
-                                                item.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                                    'bg-warning/10 text-warning'
+                                            item.status === 'Rejected' ? 'bg-error/10 text-error' :
+                                                'bg-warning/10 text-warning'
                                             }`}>{item.status}</span>
                                     </div>
                                     <div className="flex items-center space-x-2 mb-2">
                                         <Clock size={14} className="text-text-secondary" />
                                         <span className="text-sm text-text-secondary">{item.type} - {item.time}</span>
                                     </div>
-                                    <p className="text-sm text-text-main">{item.reason}</p>
+                                    <p className="text-sm text-text-main mb-2">{item.reason}</p>
+
+                                    {item.status === 'Approved' && item.approvedBy && (
+                                        <p className="text-xs font-medium text-text-muted italic">
+                                            Approved by: <span className="text-text-secondary">{item.approvedBy}</span>
+                                        </p>
+                                    )}
                                 </Card>
                             ))}
                         </div>

@@ -6,9 +6,9 @@ const ApprovedPermissionList = () => {
     const navigate = useNavigate();
 
     const permissionList = [
-        { employee: 'John Doe', date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment' },
-        { employee: 'Jane Smith', date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work' },
-        { employee: 'Mike Johnson', date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Approved', reason: 'Personal work' },
+        { date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment', approvedBy: 'Admin (Manager)' },
+        { date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work', approvedBy: 'Supervisor' },
+        { date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Approved', reason: 'Personal work', approvedBy: 'John (HR)' },
     ];
 
     return (
@@ -24,17 +24,15 @@ const ApprovedPermissionList = () => {
                 {permissionList.map((permission, idx) => (
                     <Card key={idx}>
                         <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-bold text-base">{permission.employee}</h3>
+                            <div className="flex items-center space-x-2">
+                                <CheckCircle size={16} className="text-success" />
+                                <span className="font-bold text-sm text-text-main">{permission.date}</span>
+                            </div>
                             <span className="px-3 py-1 rounded-full text-xs font-medium bg-success/10 text-success flex items-center space-x-1">
-                                <CheckCircle size={14} />
                                 <span>{permission.status}</span>
                             </span>
                         </div>
                         <div className="space-y-2 mb-4">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-text-secondary">Date:</span>
-                                <span className="font-medium">{permission.date}</span>
-                            </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-text-secondary">Time:</span>
                                 <span className="font-medium">{permission.timeFrom} - {permission.timeTo}</span>
@@ -43,7 +41,11 @@ const ApprovedPermissionList = () => {
                                 <span className="text-text-secondary">Duration:</span>
                                 <span className="font-medium text-primary">{permission.duration}</span>
                             </div>
-                            <div className="text-sm">
+                            <div className="flex justify-between text-sm">
+                                <span className="text-text-secondary">Approved By:</span>
+                                <span className="font-medium text-text-main">{permission.approvedBy}</span>
+                            </div>
+                            <div className="text-sm pt-2 border-t border-gray-100">
                                 <span className="text-text-secondary block mb-1">Reason:</span>
                                 <p className="font-medium">{permission.reason}</p>
                             </div>

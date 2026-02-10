@@ -6,9 +6,9 @@ const ApprovedOTList = () => {
     const navigate = useNavigate();
 
     const otList = [
-        { date: '2026-01-10', employee: 'John Doe', hours: 3, status: 'Approved', approvedBy: 'Manager' },
-        { date: '2026-01-08', employee: 'Jane Smith', hours: 2.5, status: 'Approved', approvedBy: 'Manager' },
-        { date: '2026-01-05', employee: 'Mike Johnson', hours: 4, status: 'Approved', approvedBy: 'Manager' },
+        { date: '2026-01-10', hours: 3, status: 'Approved', approvedBy: 'Admin (Manager)' },
+        { date: '2026-01-08', hours: 2.5, status: 'Approved', approvedBy: 'Supervisor' },
+        { date: '2026-01-05', hours: 4, status: 'Approved', approvedBy: 'John (HR)' },
     ];
 
     return (
@@ -34,10 +34,7 @@ const ApprovedOTList = () => {
                             </span>
                         </div>
                         <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-text-secondary">Employee:</span>
-                                <span className="font-medium">{ot.employee}</span>
-                            </div>
+
                             <div className="flex justify-between text-sm">
                                 <span className="text-text-secondary">OT Hours:</span>
                                 <span className="font-medium text-primary">{ot.hours} hours</span>

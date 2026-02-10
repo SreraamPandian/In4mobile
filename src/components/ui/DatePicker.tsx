@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday, startOfWeek, endOfWeek } from 'date-fns';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DatePickerProps {
@@ -55,17 +55,17 @@ const DatePicker: React.FC<DatePickerProps> = ({ label, value, onChange }) => {
             {/* Input Trigger */}
             <div
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-gray-50 rounded-2xl p-4 transition-colors hover:bg-gray-100/80 group cursor-pointer"
+                className="bg-gray-50 rounded-xl p-2 transition-colors hover:bg-gray-100/80 group cursor-pointer"
             >
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 group-hover:text-gray-500 transition-colors pointer-events-none">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-500 transition-colors pointer-events-none">
                     {label}
                 </label>
                 <div className="flex items-center justify-between pointer-events-none">
-                    <span className="text-xl font-bold text-gray-900 font-sans tracking-tight">
+                    <span className="text-base font-bold text-gray-900 font-sans tracking-tight">
                         {value ? format(new Date(value), 'MM/dd/yyyy') : 'Select Date'}
                     </span>
-                    <div className={`w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm transition-colors ${isOpen ? 'text-primary' : 'group-hover:text-primary'}`}>
-                        <CalendarIcon size={18} />
+                    <div className={`w-7 h-7 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm transition-colors ${isOpen ? 'text-primary' : 'group-hover:text-primary'}`}>
+                        <CalendarIcon size={14} />
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ label, value, onChange }) => {
 
                         {/* Days Grid */}
                         <div className="grid grid-cols-7 gap-y-1">
-                            {days.map((day, idx) => {
+                            {days.map((day) => {
                                 const isSelected = value && isSameDay(new Date(value), day);
                                 const isCurrentMonth = isSameMonth(day, currentMonth);
                                 const isTodayDate = isToday(day);

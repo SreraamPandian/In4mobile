@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Briefcase } from 'lucide-react';
 import Button from '../components/ui/Button';
 
 const Login = () => {
@@ -43,8 +43,22 @@ const Login = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     onSubmit={handleLogin}
-                    className="space-y-6"
+                    className="space-y-5"
                 >
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-text-secondary ml-1">Client ID</label>
+                        <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">
+                                <Briefcase size={20} />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Enter Client ID"
+                                className="w-full h-14 pl-12 pr-4 bg-background rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-text-main placeholder:text-text-muted"
+                            />
+                        </div>
+                    </div>
+
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-text-secondary ml-1">Email Address</label>
                         <div className="relative">
@@ -60,7 +74,16 @@ const Login = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium text-text-secondary ml-1">Password</label>
+                        <div className="flex justify-between items-center px-1">
+                            <label className="text-sm font-medium text-text-secondary">Password</label>
+                            <button
+                                type="button"
+                                onClick={() => navigate('/forgot-password')}
+                                className="text-xs text-primary font-bold hover:text-primary-dark transition-colors"
+                            >
+                                Forgot Password?
+                            </button>
+                        </div>
                         <div className="relative">
                             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">
                                 <Lock size={20} />
@@ -80,12 +103,11 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center px-1">
                         <label className="flex items-center space-x-2 cursor-pointer">
                             <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                            <span className="text-text-secondary">Remember me</span>
+                            <span className="text-xs text-text-secondary font-medium tracking-tight">Keep me logged in</span>
                         </label>
-                        <a href="#" className="text-primary font-medium hover:text-primary-dark">Forgot Password?</a>
                     </div>
 
                     <Button
@@ -93,7 +115,7 @@ const Login = () => {
                         fullWidth
                         size="lg"
                         isLoading={isLoading}
-                        className="mt-4 shadow-lg shadow-primary/30"
+                        className="mt-2 shadow-lg shadow-primary/30"
                     >
                         SIGN IN <ArrowRight size={18} className="ml-2" />
                     </Button>
@@ -108,16 +130,7 @@ const Login = () => {
                     </button>
                 </motion.form>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                    className="mt-auto pt-8 text-center"
-                >
-                    <p className="text-text-muted text-sm">
-                        Need help? <a href="#" className="text-primary font-medium">Contact Support</a>
-                    </p>
-                </motion.div>
+
             </div>
         </div>
     );

@@ -1,178 +1,176 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Calendar } from 'lucide-react';
-import Button from '../components/ui/Button';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Calendar, ChevronDown } from 'lucide-react';
+import { format, subMonths } from 'date-fns';
+import Card from '../components/ui/Card';
+
+const CustomSelect = ({ value, onChange, options, icon: Icon }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative flex-1" ref={containerRef}>
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-white rounded-xl border border-border p-3 pl-10 flex items-center justify-between shadow-sm cursor-pointer hover:bg-gray-50 transition-colors"
+      >
+        <div className="flex items-center space-x-2">
+          <Icon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <span className="font-semibold text-text-main text-sm truncate">{value}</span>
+        </div>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown size={18} className="text-gray-400" />
+        </motion.div>
+      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-lg rounded-xl border border-white/20 shadow-xl z-50 overflow-hidden max-h-60 overflow-y-auto scrollbar-hide"
+          >
+            {options.map((opt: string) => (
+              <div
+                key={opt}
+                onClick={() => {
+                  onChange(opt);
+                  setIsOpen(false);
+                }}
+                className={`px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${value === opt
+                    ? 'bg-primary text-white'
+                    : 'text-text-main hover:bg-primary/10'
+                  }`}
+              >
+                {opt}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const Payslip = () => {
-  const [selectedMonth, setSelectedMonth] = useState('December');
-  const [selectedYear, setSelectedYear] = useState('2025');
+  const now = new Date();
+  const prevMonthDate = subMonths(now, 1);
 
-  const years = ['2026', '2025', '2024'];
+  const [selectedMonth, setSelectedMonth] = useState(format(prevMonthDate, 'MMMM'));
+  const [selectedYear, setSelectedYear] = useState(format(prevMonthDate, 'yyyy'));
+
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  // Mock history data
-  const history = [
-    { month: 'November', year: '2025' },
-    { month: 'October', year: '2025' },
-    { month: 'September', year: '2025' },
-    { month: 'August', year: '2025' },
+  const years = ['2026', '2025', '2024'];
+
+  const earnings = [
+    { label: 'Basic Salary', amount: '₹ 30,000' },
+    { label: 'HRA', amount: '₹ 10,000' },
+    { label: 'Allowances', amount: '₹ 5,000' },
   ];
 
-  const handleDownload = (month: string, year: string) => {
-    try {
-      const filename = `Payslip_${month}_${year}.txt`;
+  const deductions = [
+    { label: 'PF Contribution', amount: '₹ 2,000' },
+    { label: 'Tax (TDS)', amount: '₹ 3,000' },
+  ];
 
-      // Create a text-based payslip receipt
-      const content = `
-*************************************
-        PAYSLIP RECEIPT
-*************************************
-Employee Name: John Doe
-Employee ID: EMP123
-Month/Year: ${month} ${year}
-
-EARNINGS
--------------------------------------
-Basic Salary ............ ₹ 30,000
-HRA ..................... ₹ 10,000
-Special Allowance ....... ₹  5,000
--------------------------------------
-Total Earnings .......... ₹ 45,000
-
-DEDUCTIONS
--------------------------------------
-PF Contribution ......... ₹  2,000
-Professional Tax ........ ₹    500
-TDS ..................... ₹  2,500
--------------------------------------
-Total Deductions ........ ₹  5,000
-
-*************************************
-NET SALARY: ₹ 40,000
-*************************************
-      `;
-
-      const blob = new Blob([content], { type: "text/plain" });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
+  const handleDownload = () => {
+    // Mock download functionality
+    console.log("Downloading PDF for", selectedMonth, selectedYear);
   };
 
   return (
-    <div className="pb-24 px-6 pt-6 min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8 text-center"
-      >
-        <h1 className="text-2xl font-bold text-text-main mb-2">Payslip</h1>
-        <p className="text-text-secondary text-sm">Select a period to download your payslip</p>
-      </motion.div>
+    <div className="pb-24 px-4 pt-6 min-h-screen bg-gray-50 flex flex-col space-y-4">
+      {/* Period Selection Grid */}
+      <div className="flex space-x-3">
+        <CustomSelect
+          value={selectedYear}
+          onChange={setSelectedYear}
+          options={years}
+          icon={Calendar}
+        />
+        <CustomSelect
+          value={selectedMonth}
+          onChange={setSelectedMonth}
+          options={months}
+          icon={Calendar}
+        />
+      </div>
 
-      {/* Main Content Card */}
+      {/* Net Salary Card */}
       <motion.div
+        key={`${selectedMonth}-${selectedYear}`}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1 }}
-        className="w-full max-w-md"
+        className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] p-8 text-center text-white shadow-xl shadow-indigo-200"
       >
-        <div className="bg-white rounded-3xl p-8 shadow-xl shadow-gray-200/50 space-y-8">
-
-          <div className="space-y-6">
-            {/* Year Selector - Scrolling */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block ml-1">Year</label>
-              <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
-                {years.map((year) => (
-                  <button
-                    key={year}
-                    onClick={() => setSelectedYear(year)}
-                    className={`flex-shrink-0 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedYear === year
-                      ? 'bg-primary text-white shadow-lg shadow-primary/30 scale-105'
-                      : 'bg-gray-50 text-gray-500 border border-gray-100 hover:bg-gray-100'
-                      }`}
-                  >
-                    {year}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Month Selector - Scrolling */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block ml-1">Month</label>
-              <div className="flex space-x-3 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
-                {months.map((month) => (
-                  <button
-                    key={month}
-                    onClick={() => setSelectedMonth(month)}
-                    className={`flex-shrink-0 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedMonth === month
-                      ? 'bg-primary text-white shadow-lg shadow-primary/30'
-                      : 'bg-gray-50 text-gray-500 border border-gray-100 hover:bg-gray-100'
-                      }`}
-                  >
-                    {month}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Download Button */}
-          <Button
-            onClick={() => handleDownload(selectedMonth, selectedYear)}
-            fullWidth
-            size="lg"
-            className="h-14 text-base shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all font-bold"
-          >
-            <Download size={20} className="mr-2 stroke-[2.5]" />
-            Download Payslip
-          </Button>
+        <p className="text-sm font-medium text-white/80 mb-2">Net Salary</p>
+        <h2 className="text-5xl font-bold mb-4">₹ 45,000</h2>
+        <div className="space-y-1">
+          <p className="text-sm font-semibold">{selectedMonth} {selectedYear}</p>
+          <p className="text-xs text-white/70">Paid on {selectedMonth === 'December' ? 'January 1' : `${months[months.indexOf(selectedMonth) + 1] || 'January'} 1`}, {selectedMonth === 'December' ? parseInt(selectedYear) + 1 : selectedYear}</p>
         </div>
       </motion.div>
 
-      {/* History */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="mt-10 w-full max-w-md"
-      >
-        <h3 className="text-sm font-bold text-text-muted uppercase tracking-wider mb-4 px-2">Previous Payslips</h3>
-        <div className="space-y-3">
-          {history.map((item, idx) => (
-            <motion.button
-              key={idx}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={() => handleDownload(item.month, item.year)}
-              className="w-full p-4 bg-white rounded-xl border border-gray-100 hover:border-primary/20 hover:shadow-md transition-all text-left flex justify-between items-center group"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                  <Calendar size={18} className="text-gray-400 group-hover:text-primary transition-colors" />
-                </div>
-                <span className="text-sm font-semibold text-text-main">{item.month} {item.year}</span>
-              </div>
-              <div className="p-2 rounded-full bg-gray-50 text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors">
-                <Download size={16} />
-              </div>
-            </motion.button>
+      {/* Earnings Card */}
+      <Card className="rounded-[1.5rem] p-6 shadow-sm">
+        <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-6">Earnings</h3>
+        <div className="space-y-4">
+          {earnings.map((item, idx) => (
+            <div key={idx} className="flex justify-between items-center text-sm">
+              <span className="text-text-secondary">{item.label}</span>
+              <span className="font-bold text-text-main">{item.amount}</span>
+            </div>
           ))}
+          <div className="pt-4 border-t border-border flex justify-between items-center font-bold">
+            <span className="text-text-main">Total Earnings</span>
+            <span className="text-success">₹ 45,000</span>
+          </div>
         </div>
-      </motion.div>
+      </Card>
+
+      {/* Deductions Card */}
+      <Card className="rounded-[1.5rem] p-6 shadow-sm">
+        <h3 className="text-sm font-bold text-text-main uppercase tracking-wider mb-6">Deductions</h3>
+        <div className="space-y-4">
+          {deductions.map((item, idx) => (
+            <div key={idx} className="flex justify-between items-center text-sm">
+              <span className="text-text-secondary">{item.label}</span>
+              <span className="font-bold text-text-main">{item.amount}</span>
+            </div>
+          ))}
+          <div className="pt-4 border-t border-border flex justify-between items-center font-bold">
+            <span className="text-text-main">Total Deductions</span>
+            <span className="text-error">₹ 5,000</span>
+          </div>
+        </div>
+      </Card>
+
+      {/* Download Button */}
+      <button
+        onClick={handleDownload}
+        className="w-full h-14 bg-[#6366f1] text-white rounded-2xl flex items-center justify-center space-x-2 font-bold shadow-lg shadow-indigo-100 active:scale-[0.98] transition-all"
+      >
+        <Download size={20} />
+        <span>Download PDF</span>
+      </button>
     </div>
   );
 };

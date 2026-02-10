@@ -6,9 +6,9 @@ const ManagerPermissionApprovals = () => {
     const navigate = useNavigate();
 
     const permissionRequests = [
-        { employee: 'John Doe', date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment', attachmentUrl: 'https://example.com/doc.pdf' },
-        { employee: 'Jane Smith', date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work', attachmentUrl: null },
-        { employee: 'Mike Johnson', date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Pending', reason: 'Personal work', attachmentUrl: 'https://example.com/letter.pdf' },
+        { employee: 'John Doe', date: '2026-01-10', timeFrom: '10:00 AM', timeTo: '11:30 AM', duration: '1.5 hours', status: 'Approved', reason: 'Doctor appointment', approvedBy: 'Admin (HR)', attachmentUrl: 'https://example.com/doc.pdf' },
+        { employee: 'Jane Smith', date: '2026-01-12', timeFrom: '02:00 PM', timeTo: '03:00 PM', duration: '1 hour', status: 'Approved', reason: 'Bank work', approvedBy: 'Supervisor', attachmentUrl: null },
+        { employee: 'Mike Johnson', date: '2026-01-15', timeFrom: '11:00 AM', timeTo: '12:00 PM', duration: '1 hour', status: 'Pending', reason: 'Personal work', approvedBy: null, attachmentUrl: 'https://example.com/letter.pdf' },
     ];
 
     const handleApprove = (_employee: string) => {
@@ -32,7 +32,9 @@ const ManagerPermissionApprovals = () => {
                 {permissionRequests.map((permission, idx) => (
                     <Card key={idx}>
                         <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-bold text-base">{permission.employee}</h3>
+                            <h3 className="font-bold text-base">
+                                {permission.status === 'Approved' ? `Approved By: ${permission.approvedBy}` : permission.employee}
+                            </h3>
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${permission.status === 'Approved' ? 'bg-success/10 text-success' :
                                 permission.status === 'Rejected' ? 'bg-error/10 text-error' :
                                     'bg-warning/10 text-warning'
@@ -41,6 +43,12 @@ const ManagerPermissionApprovals = () => {
                             </span>
                         </div>
                         <div className="space-y-2 mb-4">
+                            {permission.status === 'Approved' && (
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-text-secondary">Employee:</span>
+                                    <span className="font-medium">{permission.employee}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between text-sm">
                                 <span className="text-text-secondary">Date:</span>
                                 <span className="font-medium">{permission.date}</span>

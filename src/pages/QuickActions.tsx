@@ -11,7 +11,6 @@ import {
   FileText,
   CheckCircle2,
   List,
-  UserCheck,
   ClipboardCheck,
   DollarSign,
   AlertTriangle
@@ -39,6 +38,7 @@ const QuickActions = () => {
         { title: 'Apply Leave', path: '/apply-leave', icon: FileText },
         { title: 'My Leave Report', path: '/my-leave-report', icon: List },
         { title: 'My Available Leave', path: '/my-available-leave', icon: CheckCircle2 },
+        { title: 'Approved Leave List', path: '/manager-leave-approvals', icon: ClipboardCheck },
       ]
     },
     {
@@ -51,6 +51,7 @@ const QuickActions = () => {
       subItems: [
         { title: 'Apply Permission', path: '/apply-permission', icon: FileText },
         { title: 'My Permission Reports', path: '/my-permission-reports', icon: List },
+        { title: 'Approved Permission List', path: '/manager-permission-approvals', icon: ClipboardCheck },
       ]
     },
     {
@@ -88,18 +89,7 @@ const QuickActions = () => {
       subItems: [
         { title: 'Apply Punch Request', path: '/apply-punch-request', icon: FileText },
         { title: 'My Punch Request Report', path: '/my-punch-reports', icon: List },
-      ]
-    },
-    {
-      id: 'manager-approvals',
-      icon: UserCheck,
-      title: 'Manager Approvals',
-      subtitle: 'Approve Leave & Permission Requests',
-      color: 'bg-rose-50 text-rose-600',
-      hasDropdown: true,
-      subItems: [
-        { title: 'Approved Leave List', path: '/manager-leave-approvals', icon: CheckCircle2 },
-        { title: 'Approved Permission List', path: '/manager-permission-approvals', icon: CheckCircle2 },
+        { title: 'Approved Punch List', path: '/approved-punch-list', icon: ClipboardCheck },
       ]
     },
     {

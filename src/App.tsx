@@ -37,6 +37,8 @@ import ManagerPermissionApprovals from './pages/ManagerPermissionApprovals';
 import EmployeeAttendanceReport from './pages/EmployeeAttendanceReport';
 import MonthlyAttendanceReport from './pages/MonthlyAttendanceReport';
 import EmployeeList from './pages/EmployeeList';
+import MapView from './pages/MapView';
+import ForgotPassword from './pages/ForgotPassword';
 
 // Placeholder for Reports
 const Reports = () => (
@@ -51,9 +53,12 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/map-view" element={<MapView />} />
+
           <Route element={<MobileLayout />}>
-            <Route path="/" element={<Splash />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/attendance" element={<Attendance />} />
             <Route path="/attendance-calendar" element={<AttendanceCalendar />} />
@@ -89,9 +94,10 @@ function App() {
             <Route path="/leave-approved" element={<LeaveApproved />} />
             <Route path="/permission-requested" element={<PermissionRequested />} />
             <Route path="/payslip-available" element={<PayslipAvailable />} />
-            {/* Catch all redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
+
+          {/* Catch all redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

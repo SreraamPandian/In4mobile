@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings, LogOut, ChevronRight, Mail, Phone, MapPin, Briefcase, User, Key } from 'lucide-react';
 import Card from '../components/ui/Card';
@@ -33,19 +32,7 @@ const Profile = () => {
             </div>
 
             <div className="px-6 mt-6 space-y-6">
-                {/* Quick Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                    {[
-                        { label: 'Total Days', value: '365' },
-                        { label: 'Present', value: '320' },
-                        { label: 'Attendance', value: '98%', textClass: 'text-success' },
-                    ].map((stat, idx) => (
-                        <Card key={idx} className="flex flex-col items-center justify-center py-4 px-2" noPadding>
-                            <span className={`text-lg font-bold ${stat.textClass || 'text-text-main'}`}>{stat.value}</span>
-                            <span className="text-[10px] text-text-muted uppercase font-medium mt-1 text-center">{stat.label}</span>
-                        </Card>
-                    ))}
-                </div>
+
 
                 {/* Info Cards */}
                 <Card className="space-y-4">

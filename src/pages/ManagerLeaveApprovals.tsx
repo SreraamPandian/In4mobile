@@ -6,9 +6,9 @@ const ManagerLeaveApprovals = () => {
     const navigate = useNavigate();
 
     const leaveRequests = [
-        { employee: 'John Doe', leaveType: 'Casual Leave', fromDate: '2026-01-15', toDate: '2026-01-16', days: 2, status: 'Approved', reason: 'Personal work', attachmentUrl: null },
-        { employee: 'Jane Smith', leaveType: 'Sick Leave', fromDate: '2026-01-12', toDate: '2026-01-12', days: 1, status: 'Approved', reason: 'Medical checkup', attachmentUrl: 'https://example.com/med.pdf' },
-        { employee: 'Mike Johnson', leaveType: 'Earned Leave', fromDate: '2026-01-20', toDate: '2026-01-22', days: 3, status: 'Pending', reason: 'Family function', attachmentUrl: 'https://example.com/invitation.pdf' },
+        { employee: 'John Doe', leaveType: 'Casual Leave', fromDate: '2026-01-15', toDate: '2026-01-16', days: 2, status: 'Approved', reason: 'Personal work', approvedBy: 'Admin (HR)', attachmentUrl: null },
+        { employee: 'Jane Smith', leaveType: 'Sick Leave', fromDate: '2026-01-12', toDate: '2026-01-12', days: 1, status: 'Approved', reason: 'Medical checkup', approvedBy: 'Supervisor', attachmentUrl: 'https://example.com/med.pdf' },
+        { employee: 'Mike Johnson', leaveType: 'Earned Leave', fromDate: '2026-01-20', toDate: '2026-01-22', days: 3, status: 'Pending', reason: 'Family function', approvedBy: null, attachmentUrl: 'https://example.com/invitation.pdf' },
     ];
 
     const handleApprove = (_employee: string) => {
@@ -32,7 +32,9 @@ const ManagerLeaveApprovals = () => {
                 {leaveRequests.map((leave, idx) => (
                     <Card key={idx}>
                         <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-bold text-base">{leave.employee}</h3>
+                            <h3 className="font-bold text-base">
+                                {leave.status === 'Approved' ? `Approved By: ${leave.approvedBy}` : leave.employee}
+                            </h3>
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${leave.status === 'Approved' ? 'bg-success/10 text-success' :
                                 leave.status === 'Rejected' ? 'bg-error/10 text-error' :
                                     'bg-warning/10 text-warning'
@@ -41,6 +43,12 @@ const ManagerLeaveApprovals = () => {
                             </span>
                         </div>
                         <div className="space-y-2 mb-4">
+                            {leave.status === 'Approved' && (
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-text-secondary">Employee:</span>
+                                    <span className="font-medium">{leave.employee}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between text-sm">
                                 <span className="text-text-secondary">Leave Type:</span>
                                 <span className="font-medium">{leave.leaveType}</span>

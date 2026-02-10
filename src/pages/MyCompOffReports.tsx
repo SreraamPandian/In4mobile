@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import Card from '../components/ui/Card';
@@ -10,8 +10,8 @@ const MyCompOffReports = () => {
 
     const handleGenerateReport = (startDate: string, endDate: string) => {
         const mockData = [
-            { date: '2025-12-25', type: 'Weekend Work', earned: 1, used: 0, balance: 1 },
-            { date: '2025-11-15', type: 'Holiday Work', earned: 1, used: 1, balance: 0 },
+            { date: '2025-12-25', type: 'Weekend Work', earned: 1, used: 0, balance: 1, approvedBy: 'Admin (Manager)' },
+            { date: '2025-11-15', type: 'Holiday Work', earned: 1, used: 1, balance: 0, approvedBy: 'Supervisor' },
         ];
         setReportData(mockData);
         alert(`Generating report from ${startDate} to ${endDate}`);
@@ -42,10 +42,19 @@ const MyCompOffReports = () => {
                                         </div>
                                         <span className="text-sm font-bold text-primary">{item.balance} day(s)</span>
                                     </div>
-                                    <p className="text-sm text-text-secondary mb-2">{item.type}</p>
-                                    <div className="flex items-center space-x-4 text-xs">
-                                        <span className="text-success">Earned: {item.earned}</span>
-                                        <span className="text-error">Used: {item.used}</span>
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-text-secondary">{item.type}</p>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center space-x-4 text-xs">
+                                                <span className="text-success">Earned: {item.earned}</span>
+                                                <span className="text-error">Used: {item.used}</span>
+                                            </div>
+                                            {item.approvedBy && (
+                                                <p className="text-[10px] font-medium text-text-muted italic">
+                                                    Approved by: <span className="text-text-secondary">{item.approvedBy}</span>
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 </Card>
                             ))}

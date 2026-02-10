@@ -85,9 +85,8 @@ const EmployeeAttendanceReport = () => {
         setSelectedEmployee(emp);
     };
 
-    const handleViewOnMap = (coords: { lat: number, lng: number }, locationName: string = '') => {
-        const query = encodeURIComponent(locationName);
-        window.open(`https://www.google.com/maps?q=${coords.lat},${coords.lng}+(${query})`, '_blank');
+    const handleViewOnMap = (_coords: { lat: number, lng: number }, _locationName: string = '') => {
+        navigate('/map-view');
     };
 
     return (
@@ -190,23 +189,14 @@ const EmployeeAttendanceReport = () => {
                                         </div>
                                     )}
 
-                                    <div className="grid grid-cols-2 gap-2 pt-3 border-t border-border">
+                                    <div className="flex justify-center pt-3 border-t border-border">
                                         <button
                                             onClick={() => handleViewLogs(emp)}
-                                            className="py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-1 text-sm"
+                                            className="w-full py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-1 text-sm"
                                         >
                                             <Eye size={16} />
                                             <span>View Logs</span>
                                         </button>
-                                        {emp.coordinates && (
-                                            <button
-                                                onClick={() => handleViewOnMap(emp.coordinates, emp.location)}
-                                                className="py-2 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center space-x-1 text-sm"
-                                            >
-                                                <MapPin size={16} />
-                                                <span>Map View</span>
-                                            </button>
-                                        )}
                                     </div>
                                 </Card>
                             ))}

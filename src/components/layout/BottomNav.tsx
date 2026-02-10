@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, DollarSign, Calendar, User, LucideIcon, LayoutGrid } from 'lucide-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPersonRunning, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { Home, Calendar, User, LayoutGrid, LucideIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
 interface NavItem {
   label: string;
   path: string;
-  isCenter?: boolean;
-  type: 'lucide' | 'fontawesome';
-  icon: LucideIcon | IconDefinition;
+  icon: LucideIcon;
 }
 
 const BottomNav = () => {
@@ -18,108 +15,66 @@ const BottomNav = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    let timeoutId: number;
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
       }
-
       setLastScrollY(currentScrollY);
-
-      clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(() => {
-        setIsVisible(true);
-      }, 150);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timeoutId);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
   const navItems: NavItem[] = [
-    { icon: Home, label: 'Home', path: '/dashboard', type: 'lucide' },
-    { icon: Calendar, label: 'Attendance', path: '/attendance', type: 'lucide' },
-    { icon: LayoutGrid, label: 'Menu', path: '/quick-actions', type: 'lucide' },
-    { icon: User, label: 'Profile', path: '/settings', type: 'lucide' },
+    { icon: Home, label: 'Home', path: '/dashboard' },
+    { icon: Calendar, label: 'Attendance', path: '/attendance' },
+    { icon: LayoutGrid, label: 'Menu', path: '/quick-actions' },
+    { icon: User, label: 'Profile', path: '/settings' },
   ];
 
   return (
     <div
       className={cn(
-        "w-full z-40 transition-transform duration-300",
-        isVisible ? "translate-y-0" : "translate-y-full"
+        "fixed bottom-6 left-0 right-0 z-40 transition-transform duration-500 flex justify-center px-6",
+        isVisible ? "translate-y-0" : "translate-y-24"
       )}
     >
-      <div className="relative mx-4 mb-6">
-        {/* Glassmorphism background */}
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-2xl rounded-[2rem] border border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-[2rem] pointer-events-none"></div>
-
-        {/* Content */}
-        <div className="relative flex items-center justify-around px-6 py-3">
-          {navItems.map((item) => (
-            <NavLink key={item.label} to={item.path} className="relative flex-1">
-              {({ isActive }) => (
-                <>
-                  {item.isCenter ? (
-                    <div className="flex justify-center">
-                      <div className="relative -mt-10">
-                        <div className="absolute inset-0 bg-primary/40 rounded-full blur-xl"></div>
-                        <div className="relative w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-2xl shadow-primary/40 flex items-center justify-center border-4 border-white/20 backdrop-blur-sm hover:scale-105 active:scale-95 transition-transform">
-                          {item.type === 'fontawesome' && (
-                            <FontAwesomeIcon icon={item.icon as IconDefinition} className="text-white text-2xl" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center py-2 space-y-1">
-                      <div className={cn("relative transition-all duration-200", isActive && "scale-110")}>
-                        {item.type === 'lucide' && (() => {
-                          const Icon = item.icon as LucideIcon;
-                          return (
-                            <Icon
-                              size={24}
-                              strokeWidth={isActive ? 2.5 : 2}
-                              className={cn(
-                                "transition-colors duration-200",
-                                isActive ? "text-primary" : "text-gray-500"
-                              )}
-                            />
-                          );
-                        })()}
-                        {item.type === 'fontawesome' && (
-                          <FontAwesomeIcon
-                            icon={item.icon as IconDefinition}
-                            className={cn(
-                              "text-xl transition-colors duration-200",
-                              isActive ? "text-primary" : "text-gray-500"
-                            )}
-                          />
-                        )}
-                      </div>
-                      <span className={cn(
-                        "text-[10px] font-medium transition-colors duration-200",
-                        isActive ? "text-primary" : "text-gray-500"
-                      )}>
-                        {item.label}
-                      </span>
-                    </div>
+      <div className="w-full max-w-sm bg-white/80 backdrop-blur-md rounded-[2rem] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/20 flex items-center justify-around px-2 py-3">
+        {navItems.map((item) => (
+          <NavLink key={item.label} to={item.path} className="relative flex-1">
+            {({ isActive }) => (
+              <div className="flex flex-col items-center group">
+                <div className={cn(
+                  "relative flex items-center justify-center w-12 h-10 rounded-2xl transition-all duration-300",
+                  isActive ? "text-primary" : "text-gray-400 group-hover:text-primary/70"
+                )}>
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-pill"
+                      className="absolute inset-x-1 bottom-0 h-1 bg-primary rounded-full"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
                   )}
-                </>
-              )}
-            </NavLink>
-          ))}
-        </div>
+                  <item.icon
+                    size={22}
+                    strokeWidth={isActive ? 2.5 : 2}
+                    className="transition-transform duration-200 active:scale-95"
+                  />
+                </div>
+                <span className={cn(
+                  "text-[10px] font-bold mt-1 transition-all duration-200",
+                  isActive ? "text-primary" : "text-gray-400"
+                )}>
+                  {item.label}
+                </span>
+              </div>
+            )}
+          </NavLink>
+        ))}
       </div>
     </div>
   );

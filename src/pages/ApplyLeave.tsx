@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, Clock, ArrowLeft, Info } from 'lucide-react';
+import { Calendar as CalendarIcon, ArrowLeft, ChevronDown, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import FileUpload from '../components/ui/FileUpload';
 
 const ApplyLeave = () => {
     const navigate = useNavigate();
     const [leaveType, setLeaveType] = useState('casual');
+    const [isOpen, setIsOpen] = useState(false);
     const [duration, setDuration] = useState('single');
     const [session, setSession] = useState('full');
     const [attachment, setAttachment] = useState<File | null>(null);
+
+    const leaveTypes = [
+        { id: 'casual', label: 'Casual Leave', balance: 12, color: 'text-primary', bgColor: 'bg-primary/10' },
+        { id: 'sick', label: 'Sick Leave', balance: 5, color: 'text-red-600', bgColor: 'bg-red-50' },
+        { id: 'earned', label: 'Earned Leave', balance: 3, color: 'text-green-600', bgColor: 'bg-green-50' },
+        { id: 'maternity', label: 'Maternity Leave', balance: 90, color: 'text-purple-600', bgColor: 'bg-purple-50' },
+        { id: 'paternity', label: 'Paternity Leave', balance: 15, color: 'text-blue-600', bgColor: 'bg-blue-50' },
+        { id: 'compoff', label: 'Comp-off', balance: 2, color: 'text-orange-600', bgColor: 'bg-orange-50' },
+        { id: 'medical', label: 'Medical Leave', balance: 10, color: 'text-rose-600', bgColor: 'bg-rose-50' },
+    ];
 
     return (
         <div className="pb-8">
@@ -24,27 +34,81 @@ const ApplyLeave = () => {
             </div>
 
             <div className="px-6 pt-6 space-y-6">
-                {/* Balance Cards */}
-                <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide -mx-6 px-6">
-                    {[
-                        { type: 'Casual', count: 12, id: 'casual', color: 'bg-primary/10 text-primary border-primary/20' },
-                        { type: 'Sick', count: 5, id: 'sick', color: 'bg-red-50 text-red-700 border-red-200' },
-                        { type: 'Earned', count: 3, id: 'earned', color: 'bg-green-50 text-green-700 border-green-200' },
-                    ].map((item) => (
-                        <motion.button
-                            key={item.id}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setLeaveType(item.id)}
-                            className={`flex-shrink-0 w-32 p-4 rounded-xl border-2 text-left transition-all ${leaveType === item.id
-                                ? `ring-2 ring-primary ring-offset-2 ${item.color}`
-                                : 'bg-surface border-border text-text-secondary'
-                                }`}
-                        >
-                            <span className="text-xs font-medium opacity-80 block mb-1">{item.type} Leave</span>
-                            <span className="text-2xl font-bold">{item.count}</span>
-                            <span className="text-xs opacity-60 block mt-1">Available</span>
-                        </motion.button>
-                    ))}
+                {/* Leave Type Custom Dropdown */}
+                <div className="relative">
+                    <label className="text-sm font-semibold text-text-main mb-2 block">Leave Type</label>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="w-full h-16 px-4 bg-surface border border-border rounded-2xl flex items-center justify-between hover:border-primary/50 transition-all shadow-sm group"
+                    >
+                        <div className="flex items-center space-x-3">
+                            <div className={`p-2.5 rounded-xl transition-colors ${(() => {
+                                const type = leaveTypes.find(t => t.id === leaveType) || leaveTypes[0];
+                                return type.bgColor;
+                            })()}`}>
+                                <Briefcase size={20} className={(() => {
+                                    const type = leaveTypes.find(t => t.id === leaveType) || leaveTypes[0];
+                                    return type.color;
+                                })()} />
+                            </div>
+                            <div className="text-left">
+                                <p className="text-[15px] font-bold text-text-main leading-tight">
+                                    {(leaveTypes.find(t => t.id === leaveType) || leaveTypes[0]).label}
+                                </p>
+                                <p className="text-[11px] text-text-muted font-bold mt-0.5 uppercase tracking-wider">
+                                    {(leaveTypes.find(t => t.id === leaveType) || leaveTypes[0]).balance} Days Available
+                                </p>
+                            </div>
+                        </div>
+                        <ChevronDown
+                            size={20}
+                            className={`text-text-muted transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                        />
+                    </button>
+
+                    {isOpen && (
+                        <>
+                            <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                className="absolute z-40 top-full left-0 right-0 mt-3 bg-white border border-border rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden"
+                            >
+                                <div className="p-2 max-h-72 overflow-y-auto scrollbar-hide">
+                                    {leaveTypes.map((type) => (
+                                        <button
+                                            key={type.id}
+                                            onClick={() => {
+                                                setLeaveType(type.id);
+                                                setIsOpen(false);
+                                            }}
+                                            className={`w-full px-4 py-3.5 flex items-center justify-between rounded-xl transition-all duration-200 mb-1 last:mb-0 ${leaveType === type.id
+                                                ? 'bg-primary/10'
+                                                : 'hover:bg-gray-50 active:scale-[0.98]'
+                                                }`}
+                                        >
+                                            <div className="flex items-center space-x-3">
+                                                <div className={`p-2 rounded-lg ${type.bgColor}`}>
+                                                    <Briefcase size={16} className={type.color} />
+                                                </div>
+                                                <span className={`text-sm font-bold ${leaveType === type.id ? 'text-primary' : 'text-text-main'}`}>
+                                                    {type.label}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <span className="text-[10px] font-black text-text-muted bg-gray-100 px-2.5 py-1 rounded-full uppercase">
+                                                    {type.balance}d
+                                                </span>
+                                                {leaveType === type.id && (
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                                )}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </>
+                    )}
                 </div>
 
                 {/* Duration Toggle */}
@@ -135,7 +199,10 @@ const ApplyLeave = () => {
                 <div>
                     <FileUpload
                         label="Attach Document (Medical Certificate, etc.)"
-                        onFileSelect={setAttachment}
+                        onFileSelect={(file) => {
+                            setAttachment(file);
+                            console.log('File attached:', file?.name);
+                        }}
                     />
                 </div>
 

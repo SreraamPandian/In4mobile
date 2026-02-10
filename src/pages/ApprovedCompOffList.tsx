@@ -6,9 +6,9 @@ const ApprovedCompOffList = () => {
     const navigate = useNavigate();
 
     const compOffList = [
-        { workedDate: '2025-12-25', requestDate: '2026-01-15', employee: 'John Doe', status: 'Approved', approvedBy: 'Manager' },
-        { workedDate: '2025-12-31', requestDate: '2026-01-20', employee: 'Jane Smith', status: 'Approved', approvedBy: 'Manager' },
-        { workedDate: '2026-01-01', requestDate: '2026-01-25', employee: 'Mike Johnson', status: 'Approved', approvedBy: 'Manager' },
+        { workedDate: '2025-12-25', requestDate: '2026-01-15', status: 'Approved', approvedBy: 'Admin (Manager)' },
+        { workedDate: '2025-12-31', requestDate: '2026-01-20', status: 'Approved', approvedBy: 'Supervisor' },
+        { workedDate: '2026-01-01', requestDate: '2026-01-25', status: 'Approved', approvedBy: 'John (HR)' },
     ];
 
     return (
@@ -34,10 +34,7 @@ const ApprovedCompOffList = () => {
                             </span>
                         </div>
                         <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                                <span className="text-text-secondary">Employee:</span>
-                                <span className="font-medium">{compOff.employee}</span>
-                            </div>
+
                             <div className="flex justify-between text-sm">
                                 <span className="text-text-secondary">Worked Date:</span>
                                 <span className="font-medium">{compOff.workedDate}</span>

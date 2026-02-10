@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import Card from '../components/ui/Card';
 import { format } from 'date-fns';
 
@@ -12,45 +12,48 @@ const Attendance = () => {
 
     const mockDayAttendance = [
         {
-            date: '2026-01-05',
+            date: '2026-02-09',
             checkIn: '09:15 AM',
             checkOut: '06:30 PM',
             status: 'Present',
             workHours: '9h 15m',
-            location: 'Office HQ'
+            lat: '12.973388',
+            lng: '80.248178'
         },
         {
-            date: '2026-01-04',
+            date: '2026-02-08',
             checkIn: '09:00 AM',
             checkOut: '06:00 PM',
             status: 'Present',
             workHours: '9h 00m',
-            location: 'Office HQ'
+            lat: '12.973388',
+            lng: '80.248178'
         },
         {
-            date: '2026-01-03',
+            date: '2026-02-07',
             checkIn: '-',
             checkOut: '-',
             status: 'Week Off',
             workHours: '-',
-            location: '-'
+            lat: '-',
+            lng: '-'
         },
     ];
 
     const mockQueueData = [
         {
-            date: '2026-01-06',
-            type: 'Leave Request',
-            reason: 'Personal Work',
-            status: 'Pending',
-            appliedOn: '2026-01-02'
+            date: '09 Feb 2026',
+            time: '04:58 PM',
+            type: 'OUT',
+            lat: '12.9733897',
+            lng: '80.2481787'
         },
         {
-            date: '2026-01-10',
-            type: 'Permission',
-            reason: 'Doctor Appointment',
-            status: 'Approved',
-            appliedOn: '2026-01-03'
+            date: '09 Feb 2026',
+            time: '09:12 AM',
+            type: 'IN',
+            lat: '12.9734567',
+            lng: '80.2484567'
         },
     ];
 
@@ -67,7 +70,7 @@ const Attendance = () => {
         <div className="min-h-screen bg-gray-50 pb-24">
             {/* Header */}
             <div className="sticky top-0 z-30 bg-primary text-white px-6 py-4">
-                <h1 className="text-xl font-bold mb-4">Attendance</h1>
+                <h1 className="text-lg font-bold mb-3 tracking-tight">Attendance</h1>
 
                 {/* Tab Switcher */}
                 <div className="flex bg-white/20 rounded-full p-1">
@@ -76,9 +79,9 @@ const Attendance = () => {
                             setActiveTab('day');
                             setHasSubmitted(false);
                         }}
-                        className={`flex-1 py-2 px-4 rounded-full font-semibold transition-all ${activeTab === 'day'
-                                ? 'bg-white text-primary shadow-md'
-                                : 'text-white'
+                        className={`flex-1 py-1.5 px-1 rounded-full text-xs font-bold transition-all ${activeTab === 'day'
+                            ? 'bg-white text-primary shadow-md'
+                            : 'text-white/80 hover:text-white'
                             }`}
                     >
                         Day Attendance
@@ -86,11 +89,12 @@ const Attendance = () => {
                     <button
                         onClick={() => {
                             setActiveTab('queue');
-                            setHasSubmitted(false);
+                            setAttendanceData(mockQueueData);
+                            setHasSubmitted(true);
                         }}
-                        className={`flex-1 py-2 px-4 rounded-full font-semibold transition-all ${activeTab === 'queue'
-                                ? 'bg-white text-primary shadow-md'
-                                : 'text-white'
+                        className={`flex-1 py-1.5 px-1 rounded-full text-xs font-bold transition-all ${activeTab === 'queue'
+                            ? 'bg-white text-primary shadow-md'
+                            : 'text-white/80 hover:text-white'
                             }`}
                     >
                         Attendance Queue
@@ -98,126 +102,118 @@ const Attendance = () => {
                 </div>
             </div>
 
-            {/* Date Range and Submit */}
-            <div className="px-6 py-6">
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div>
-                        <label className="block text-xs font-semibold text-text-secondary mb-2">From Date:</label>
-                        <input
-                            type="date"
-                            value={fromDate}
-                            onChange={(e) => setFromDate(e.target.value)}
-                            className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
-                        />
+            {/* Date Range and Submit (Only for Day Attendance) */}
+            {activeTab === 'day' && (
+                <div className="px-6 py-6 transition-all duration-300">
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label className="block text-xs font-bold text-text-secondary mb-1.5 uppercase tracking-wider">From Date</label>
+                            <input
+                                type="date"
+                                value={fromDate}
+                                onChange={(e) => setFromDate(e.target.value)}
+                                className="w-full h-12 px-4 bg-white border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm font-medium"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-text-secondary mb-1.5 uppercase tracking-wider">To Date</label>
+                            <input
+                                type="date"
+                                value={toDate}
+                                onChange={(e) => setToDate(e.target.value)}
+                                className="w-full h-12 px-4 bg-white border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm font-medium"
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label className="block text-xs font-semibold text-text-secondary mb-2">To Date:</label>
-                        <input
-                            type="date"
-                            value={toDate}
-                            onChange={(e) => setToDate(e.target.value)}
-                            className="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm"
-                        />
-                    </div>
+                    <button
+                        onClick={handleSubmit}
+                        className="w-full py-3.5 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all active:scale-[0.98]"
+                    >
+                        Submit
+                    </button>
                 </div>
-                <button
-                    onClick={handleSubmit}
-                    className="w-full py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-dark transition-colors"
-                >
-                    Submit
-                </button>
-            </div>
+            )}
 
             {/* Content */}
             <div className="px-6 pb-6">
                 {!hasSubmitted ? (
                     <Card>
                         <div className="text-center py-12">
-                            <Calendar size={48} className="mx-auto text-gray-300 mb-4" />
-                            <p className="text-text-muted">Select date range and click Submit to view {activeTab === 'day' ? 'attendance records' : 'attendance queue'}</p>
+                            <Calendar size={48} className="mx-auto text-gray-200 mb-4" />
+                            <p className="text-sm font-medium text-text-muted px-4">Select date range and click Submit to view records</p>
                         </div>
                     </Card>
                 ) : attendanceData.length === 0 ? (
                     <Card>
                         <div className="text-center py-12">
-                            <p className="text-text-muted">No Data Found</p>
+                            <p className="text-sm font-medium text-text-muted">No records found for selected period</p>
                         </div>
                     </Card>
                 ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                         {activeTab === 'day' ? (
                             // Day Attendance View
                             attendanceData.map((record, idx) => (
-                                <Card key={idx}>
-                                    <div className="flex items-center justify-between mb-3">
+                                <Card key={idx} className="overflow-hidden border-l-4 border-l-primary">
+                                    <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center space-x-2">
-                                            <Calendar size={18} className="text-primary" />
-                                            <h4 className="font-bold text-base">{format(new Date(record.date), 'dd MMM yyyy')}</h4>
+                                            <Calendar size={16} className="text-primary" />
+                                            <h4 className="font-bold text-base text-text-main">{format(new Date(record.date), 'dd MMM yyyy')}</h4>
                                         </div>
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${record.status === 'Present' ? 'bg-success/10 text-success' :
-                                                record.status === 'Week Off' ? 'bg-primary/10 text-primary' :
-                                                    'bg-error/10 text-error'
+                                        <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${record.status === 'Present' ? 'bg-success/10 text-success' :
+                                            record.status === 'Week Off' ? 'bg-primary/10 text-primary' :
+                                                'bg-error/10 text-error'
                                             }`}>
                                             {record.status}
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-3 gap-3 pt-3 border-t border-border">
+                                    <div className="grid grid-cols-3 gap-4 pb-4 border-b border-border/60">
                                         <div>
-                                            <p className="text-xs text-text-secondary mb-1">Check In</p>
+                                            <p className="text-[10px] font-bold text-text-secondary uppercase tracking-widest mb-1">Check In</p>
                                             <div className="flex items-center space-x-1">
-                                                <Clock size={14} className="text-success" />
-                                                <p className="text-sm font-semibold">{record.checkIn}</p>
+                                                {record.checkIn !== '-' && <Clock size={12} className="text-success" />}
+                                                <p className="text-sm font-bold text-text-main">{record.checkIn}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <p className="text-xs text-text-secondary mb-1">Check Out</p>
+                                            <p className="text-[10px] font-bold text-text-secondary uppercase tracking-widest mb-1">Check Out</p>
                                             <div className="flex items-center space-x-1">
-                                                <Clock size={14} className="text-error" />
-                                                <p className="text-sm font-semibold">{record.checkOut}</p>
+                                                {record.checkOut !== '-' && <Clock size={12} className="text-error" />}
+                                                <p className="text-sm font-bold text-text-main">{record.checkOut}</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <p className="text-xs text-text-secondary mb-1">Work Hours</p>
-                                            <p className="text-sm font-semibold text-primary">{record.workHours}</p>
+                                            <p className="text-[10px] font-bold text-text-secondary uppercase tracking-widest mb-1">Hours</p>
+                                            <p className="text-sm font-bold text-primary">{record.workHours}</p>
                                         </div>
                                     </div>
 
-                                    {record.location !== '-' && (
-                                        <div className="mt-3 pt-3 border-t border-border">
-                                            <p className="text-xs text-text-secondary">Location: <span className="font-medium text-text-main">{record.location}</span></p>
+                                    {record.lat !== '-' && (
+                                        <div className="pt-3 flex justify-between">
+                                            <p className="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+                                                Lat: <span className="text-text-main font-bold ml-1">{record.lat}</span>
+                                            </p>
+                                            <p className="text-[10px] font-bold text-text-secondary uppercase tracking-widest text-right">
+                                                Lng: <span className="text-text-main font-bold ml-1">{record.lng}</span>
+                                            </p>
                                         </div>
                                     )}
                                 </Card>
                             ))
                         ) : (
-                            // Attendance Queue View
+                            // Attendance Queue View (Matching Image Style)
                             attendanceData.map((item, idx) => (
-                                <Card key={idx}>
-                                    <div className="flex items-center justify-between mb-3">
-                                        <div>
-                                            <h4 className="font-bold text-base">{item.type}</h4>
-                                            <p className="text-sm text-text-muted">{format(new Date(item.date), 'dd MMM yyyy')}</p>
+                                <Card key={idx} noPadding className="bg-gray-50 border border-gray-200 overflow-hidden">
+                                    <div className="px-4 py-3 space-y-2">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-[13px] font-medium text-text-main">{item.date}</span>
+                                            <span className="text-[13px] font-medium text-text-main">{item.time}</span>
+                                            <span className="text-[14px] font-black text-text-main">{item.type}</span>
                                         </div>
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${item.status === 'Approved' ? 'bg-success/10 text-success' :
-                                                item.status === 'Rejected' ? 'bg-error/10 text-error' :
-                                                    'bg-warning/10 text-warning'
-                                            }`}>
-                                            {item.status === 'Approved' ? <CheckCircle size={14} /> :
-                                                item.status === 'Rejected' ? <XCircle size={14} /> :
-                                                    <Clock size={14} />}
-                                            <span>{item.status}</span>
-                                        </span>
-                                    </div>
-
-                                    <div className="space-y-2 pt-3 border-t border-border">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-text-secondary">Reason:</span>
-                                            <span className="font-medium">{item.reason}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-text-secondary">Applied On:</span>
-                                            <span className="font-medium">{format(new Date(item.appliedOn), 'dd MMM yyyy')}</span>
+                                        <div className="flex justify-between items-center text-text-main">
+                                            <span className="text-[13px]">lat: {item.lat}</span>
+                                            <span className="text-[13px]">lng: {item.lng}</span>
                                         </div>
                                     </div>
                                 </Card>
