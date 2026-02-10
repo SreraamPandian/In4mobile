@@ -11,7 +11,6 @@ interface ReportFilterProps {
 const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
     const [startDate, setStartDate] = useState(format(startOfMonth(new Date()), 'yyyy-MM-dd'));
     const [endDate, setEndDate] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'));
-    const [selectedTab, setSelectedTab] = useState<'Monthly' | 'Custom'>('Custom');
     const [duration, setDuration] = useState(0);
 
     useEffect(() => {
@@ -23,61 +22,30 @@ const ReportFilter: React.FC<ReportFilterProps> = ({ onGenerateReport }) => {
         }
     }, [startDate, endDate]);
 
-    const handleTabChange = (tab: 'Monthly' | 'Custom') => {
-        setSelectedTab(tab);
-        const today = new Date();
 
-        if (tab === 'Monthly') {
-            setStartDate(format(startOfMonth(today), 'yyyy-MM-dd'));
-            setEndDate(format(endOfMonth(today), 'yyyy-MM-dd'));
-        }
-    };
 
     const handleGenerate = () => {
         onGenerateReport(startDate, endDate);
     };
 
     return (
-        <div className="space-y-2">
-            {/* Period Tabs */}
-            <div className="bg-gray-100 p-1.5 rounded-2xl flex relative">
-                {/* Active Tab Background Animation - Simplified for now */}
-                {(['Monthly', 'Custom'] as const).map((tab) => (
-                    <button
-                        key={tab}
-                        onClick={() => handleTabChange(tab)}
-                        className={`flex-1 py-2 text-sm font-bold rounded-xl transition-all z-10 ${selectedTab === tab
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-400 hover:text-gray-600'
-                            }`}
-                    >
-                        {tab}
-                    </button>
-                ))}
-            </div>
-
+        <div className="space-y-4">
             {/* Date Inputs Card */}
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 space-y-2"
+                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-4"
             >
                 <DatePicker
-                    label="Start Date"
+                    label="START DATE"
                     value={startDate}
-                    onChange={(date) => {
-                        setStartDate(date);
-                        setSelectedTab('Custom');
-                    }}
+                    onChange={(date) => setStartDate(date)}
                 />
 
                 <DatePicker
-                    label="End Date"
+                    label="END DATE"
                     value={endDate}
-                    onChange={(date) => {
-                        setEndDate(date);
-                        setSelectedTab('Custom');
-                    }}
+                    onChange={(date) => setEndDate(date)}
                 />
             </motion.div>
 

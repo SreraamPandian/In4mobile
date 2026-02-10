@@ -29,11 +29,11 @@ import ApplyOT from './pages/ApplyOT';
 import ApplyCompOff from './pages/ApplyCompOff';
 import ApprovedOTList from './pages/ApprovedOTList';
 import ApprovedCompOffList from './pages/ApprovedCompOffList';
-import ApprovedPermissionList from './pages/ApprovedPermissionList';
 import TimeLogReport from './pages/TimeLogReport';
 import InvalidPunchLogs from './pages/InvalidPunchLogs';
 import ManagerLeaveApprovals from './pages/ManagerLeaveApprovals';
 import ManagerPermissionApprovals from './pages/ManagerPermissionApprovals';
+import ManagerPunchApprovals from './pages/ManagerPunchApprovals';
 import EmployeeAttendanceReport from './pages/EmployeeAttendanceReport';
 import MonthlyAttendanceReport from './pages/MonthlyAttendanceReport';
 import EmployeeList from './pages/EmployeeList';
@@ -74,9 +74,10 @@ function App() {
             <Route path="/my-compoff-reports" element={<MyCompOffReports />} />
             <Route path="/apply-compoff" element={<ApplyCompOff />} />
             <Route path="/approved-compoff-list" element={<ApprovedCompOffList />} />
-            <Route path="/approved-permission-list" element={<ApprovedPermissionList />} />
+            <Route path="/manager-permission-approvals" element={<ManagerPermissionApprovals />} />
             <Route path="/apply-ot" element={<ApplyOT />} />
             <Route path="/approved-ot-list" element={<ApprovedOTList />} />
+            <Route path="/manager-punch-approvals" element={<ManagerPunchApprovals />} />
             <Route path="/time-log-report" element={<TimeLogReport />} />
             <Route path="/invalid-punch-logs" element={<InvalidPunchLogs />} />
             <Route path="/apply-punch-request" element={<ApplyPunchRequest />} />

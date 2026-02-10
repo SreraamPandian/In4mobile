@@ -89,7 +89,7 @@ const QuickActions = () => {
       subItems: [
         { title: 'Apply Punch Request', path: '/apply-punch-request', icon: FileText },
         { title: 'My Punch Request Report', path: '/my-punch-reports', icon: List },
-        { title: 'Approved Punch List', path: '/approved-punch-list', icon: ClipboardCheck },
+        { title: 'Approved Punch List', path: '/manager-punch-approvals', icon: ClipboardCheck },
       ]
     },
     {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, X, Filter } from 'lucide-react';
+import { ArrowLeft, CheckCircle, X, MapPin, Filter } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ApprovalFilter from '../components/ApprovalFilter';
 
-const ApprovedOTList = () => {
+const ManagerPunchApprovals = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'New' | 'All'>('New');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -15,14 +15,13 @@ const ApprovedOTList = () => {
         toDate: ''
     });
 
-    const otList = [
-        { employee: 'Robert Wilson', date: '2026-01-10', hours: 3, status: 'Approved', approvedBy: 'Admin (Manager)' },
-        { employee: 'Sarah Connor', date: '2026-01-08', hours: 2.5, status: 'Approved', approvedBy: 'Supervisor' },
-        { employee: 'David Brown', date: '2026-01-05', hours: 4, status: 'Approved', approvedBy: 'John (HR)' },
-        { employee: 'Emma Watson', date: '2026-01-15', hours: 3.5, status: 'Pending', approvedBy: null },
+    const punchRequests = [
+        { employee: 'John Doe', date: '2026-01-15', time: '09:05 AM', type: 'Punch In', status: 'Approved', approvedBy: 'Admin (HR)', location: 'Office' },
+        { employee: 'Jane Smith', date: '2026-01-15', time: '06:10 PM', type: 'Punch Out', status: 'Approved', approvedBy: 'Supervisor', location: 'Home (Remote)' },
+        { employee: 'Mike Johnson', date: '2026-01-20', time: '09:15 AM', type: 'Punch In', status: 'Pending', approvedBy: null, location: 'Client Site' },
     ];
 
-    const filteredOT = otList.filter(req => {
+    const filteredRequests = punchRequests.filter(req => {
         if (activeTab === 'New' && req.status !== 'Pending') return false;
         if (filters.search && !req.employee.toLowerCase().includes(filters.search.toLowerCase())) return false;
         if (activeTab === 'All' && filters.status !== 'All' && req.status !== filters.status) return false;
@@ -42,7 +41,7 @@ const ApprovedOTList = () => {
                         <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                             <ArrowLeft size={20} />
                         </button>
-                        <h1 className="text-xl font-bold">OT Approvals</h1>
+                        <h1 className="text-xl font-bold">Punch Approvals</h1>
                     </div>
                     {activeTab === 'All' && (
                         <button
@@ -76,46 +75,57 @@ const ApprovedOTList = () => {
             </div>
 
             <div className="px-6 py-6 space-y-4">
-                {filteredOT.map((ot, idx) => (
+                {filteredRequests.map((punch, idx) => (
                     <Card key={idx}>
                         <div className="flex items-center justify-between mb-3">
                             <h3 className="font-bold text-base">
-                                {ot.status === 'Approved' ? `Approved By: ${ot.approvedBy}` : ot.employee}
+                                {punch.status === 'Approved' ? `Approved By: ${punch.approvedBy}` : punch.employee}
                             </h3>
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${ot.status === 'Approved' ? 'bg-success/10 text-success' :
-                                ot.status === 'Rejected' ? 'bg-error/10 text-error' :
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${punch.status === 'Approved' ? 'bg-success/10 text-success' :
+                                punch.status === 'Rejected' ? 'bg-error/10 text-error' :
                                     'bg-warning/10 text-warning'
                                 }`}>
-                                {ot.status}
+                                {punch.status}
                             </span>
                         </div>
                         <div className="space-y-2 mb-4">
-                            {ot.status === 'Approved' && (
+                            {punch.status === 'Approved' && (
                                 <div className="flex justify-between text-sm">
                                     <span className="text-text-secondary">Employee:</span>
-                                    <span className="font-medium">{ot.employee}</span>
+                                    <span className="font-medium">{punch.employee}</span>
                                 </div>
                             )}
                             <div className="flex justify-between text-sm">
-                                <span className="text-text-secondary">OT Date:</span>
-                                <span className="font-medium">{ot.date}</span>
+                                <span className="text-text-secondary">Date:</span>
+                                <span className="font-medium">{punch.date}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-text-secondary">OT Hours:</span>
-                                <span className="font-medium text-primary">{ot.hours} hours</span>
+                                <span className="text-text-secondary">Time:</span>
+                                <span className="font-medium">{punch.time}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-text-secondary">Type:</span>
+                                <span className={`font-bold ${punch.type === 'Punch In' ? 'text-success' : 'text-error'}`}>
+                                    {punch.type}
+                                </span>
+                            </div>
+                            <div className="flex items-center space-x-1 text-sm pt-1">
+                                <MapPin size={14} className="text-gray-400" />
+                                <span className="text-text-secondary">Location:</span>
+                                <span className="font-medium">{punch.location}</span>
                             </div>
                         </div>
-                        {ot.status === 'Pending' && (
+                        {punch.status === 'Pending' && (
                             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border">
                                 <button
-                                    onClick={() => handleApprove(ot.employee)}
+                                    onClick={() => handleApprove(punch.employee)}
                                     className="py-2 bg-success text-white rounded-lg font-semibold hover:bg-success/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <CheckCircle size={16} />
                                     <span>Approve</span>
                                 </button>
                                 <button
-                                    onClick={() => handleReject(ot.employee)}
+                                    onClick={() => handleReject(punch.employee)}
                                     className="py-2 bg-error text-white rounded-lg font-semibold hover:bg-error/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <X size={16} />
@@ -126,7 +136,7 @@ const ApprovedOTList = () => {
                     </Card>
                 ))}
 
-                {filteredOT.length === 0 && (
+                {filteredRequests.length === 0 && (
                     <div className="py-12 text-center">
                         <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Filter size={24} className="text-gray-400" />
@@ -146,4 +156,4 @@ const ApprovedOTList = () => {
     );
 };
 
-export default ApprovedOTList;
+export default ManagerPunchApprovals;
