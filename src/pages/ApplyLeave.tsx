@@ -16,6 +16,7 @@ const ApplyLeave = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [dayDetails, setDayDetails] = useState<Record<string, string>>({});
+    const [showBreakdown, setShowBreakdown] = useState(false);
 
     const leaveTypes = [
         { id: 'casual', label: 'Casual Leave', balance: 12, color: 'text-primary', bgColor: 'bg-primary/10' },
@@ -181,7 +182,17 @@ const ApplyLeave = () => {
 
                 {/* Number of Days (Read Only) - Moved below Date Selection */}
                 <div className="px-1">
-                    <label className="text-[13px] font-bold text-text-main mb-2 block">Number Of Days</label>
+                    <div className="flex items-center justify-between mb-2">
+                        <label className="text-[13px] font-bold text-text-main">Number Of Days</label>
+                        {duration === 'multiple' && selectedDates.length > 0 && (
+                            <button
+                                onClick={() => setShowBreakdown(!showBreakdown)}
+                                className={`text-[11px] font-black px-3 py-1 rounded-full transition-all uppercase tracking-wider ${showBreakdown ? 'bg-primary text-white' : 'bg-primary/10 text-primary hover:bg-primary/20'}`}
+                            >
+                                {showBreakdown ? 'Hide Breakdown' : 'Customize'}
+                            </button>
+                        )}
+                    </div>
                     <div className="relative group">
                         <input
                             type="text"
@@ -193,7 +204,7 @@ const ApplyLeave = () => {
                 </div>
 
                 {/* Day-wise Breakdown */}
-                {duration === 'multiple' && selectedDates.length > 0 && (
+                {duration === 'multiple' && selectedDates.length > 0 && showBreakdown && (
                     <div className="space-y-4 pt-2">
                         {selectedDates.map((date) => {
                             const { date: formattedDate, day } = formatDate(date);
