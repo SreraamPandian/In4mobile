@@ -1,17 +1,21 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar as CalendarIcon, ArrowLeft, ChevronDown, Briefcase } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Briefcase } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import FileUpload from '../components/ui/FileUpload';
+import DatePicker from '../components/ui/DatePicker';
 
 const ApplyLeave = () => {
     const navigate = useNavigate();
     const [leaveType, setLeaveType] = useState('casual');
     const [isOpen, setIsOpen] = useState(false);
     const [duration, setDuration] = useState('single');
-    const [session, setSession] = useState('full');
+    const [session, setSession] = useState('full-day');
     const [attachment, setAttachment] = useState<File | null>(null);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [dayDetails, setDayDetails] = useState<Record<string, string>>({});
 
     const leaveTypes = [
         { id: 'casual', label: 'Casual Leave', balance: 12, color: 'text-primary', bgColor: 'bg-primary/10' },
@@ -22,6 +26,35 @@ const ApplyLeave = () => {
         { id: 'compoff', label: 'Comp-off', balance: 2, color: 'text-orange-600', bgColor: 'bg-orange-50' },
         { id: 'medical', label: 'Medical Leave', balance: 10, color: 'text-rose-600', bgColor: 'bg-rose-50' },
     ];
+
+    const getDatesInRange = (start: string, end: string) => {
+        const dates = [];
+        let curr = new Date(start);
+        const stop = new Date(end);
+        while (curr <= stop) {
+            dates.push(new Date(curr).toISOString().split('T')[0]);
+            curr.setDate(curr.getDate() + 1);
+        }
+        return dates;
+    };
+
+    const selectedDates = duration === 'multiple' && startDate && endDate ? getDatesInRange(startDate, endDate) : [];
+
+    const calculateTotalDays = () => {
+        if (duration === 'single') return session === 'full-day' ? 1 : 0.5;
+        return selectedDates.reduce((acc, date) => {
+            const dayType = dayDetails[date] || 'full-day';
+            return acc + (dayType === 'full-day' ? 1 : 0.5);
+        }, 0);
+    };
+
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return {
+            date: date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-'),
+            day: date.toLocaleDateString('en-US', { weekday: 'long' })
+        };
+    };
 
     return (
         <div className="pb-8">
@@ -117,13 +150,13 @@ const ApplyLeave = () => {
                     <div className="bg-gray-100 p-1 rounded-xl flex">
                         <button
                             onClick={() => setDuration('single')}
-                            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${duration === 'single' ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-secondary'}`}
+                            className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${duration === 'single' ? 'bg-white shadow-sm text-primary' : 'text-text-muted'}`}
                         >
                             Single Day
                         </button>
                         <button
                             onClick={() => setDuration('multiple')}
-                            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${duration === 'multiple' ? 'bg-white shadow-sm text-text-main' : 'text-text-muted hover:text-text-secondary'}`}
+                            className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${duration === 'multiple' ? 'bg-white shadow-sm text-primary' : 'text-text-muted'}`}
                         >
                             Multiple Days
                         </button>
@@ -132,31 +165,63 @@ const ApplyLeave = () => {
 
                 {/* Date Selection */}
                 <div className="grid grid-cols-1 gap-4">
-                    <div>
-                        <label className="text-sm font-semibold text-text-main mb-2 block">
-                            {duration === 'single' ? 'Select Date' : 'From Date'}
-                        </label>
-                        <div className="relative">
-                            <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
-                            <input
-                                type="date"
-                                className="w-full h-12 pl-12 pr-4 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-text-main"
-                            />
-                        </div>
-                    </div>
+                    <DatePicker
+                        label={duration === 'single' ? 'Select Date' : 'From Date'}
+                        value={startDate}
+                        onChange={setStartDate}
+                    />
                     {duration === 'multiple' && (
-                        <div>
-                            <label className="text-sm font-semibold text-text-main mb-2 block">To Date</label>
-                            <div className="relative">
-                                <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
-                                <input
-                                    type="date"
-                                    className="w-full h-12 pl-12 pr-4 bg-surface border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-text-main"
-                                />
-                            </div>
-                        </div>
+                        <DatePicker
+                            label="To Date"
+                            value={endDate}
+                            onChange={setEndDate}
+                        />
                     )}
                 </div>
+
+                {/* Number of Days (Read Only) - Moved below Date Selection */}
+                <div className="px-1">
+                    <label className="text-[13px] font-bold text-text-main mb-2 block">Number Of Days</label>
+                    <div className="relative group">
+                        <input
+                            type="text"
+                            readOnly
+                            value={`${calculateTotalDays().toFixed(1)} Days`}
+                            className="w-full h-14 px-4 bg-gray-50/50 border border-border rounded-xl text-[15px] font-bold text-primary outline-none"
+                        />
+                    </div>
+                </div>
+
+                {/* Day-wise Breakdown */}
+                {duration === 'multiple' && selectedDates.length > 0 && (
+                    <div className="space-y-4 pt-2">
+                        {selectedDates.map((date) => {
+                            const { date: formattedDate, day } = formatDate(date);
+                            const currentType = dayDetails[date] || 'full-day';
+
+                            return (
+                                <div key={date} className="flex items-center justify-between py-2 border-b border-gray-50">
+                                    <div>
+                                        <p className="text-[15px] font-bold text-text-main leading-tight">{formattedDate}</p>
+                                        <p className="text-[12px] text-text-muted font-medium mt-0.5">{day}</p>
+                                    </div>
+                                    <div className="relative">
+                                        <select
+                                            value={currentType}
+                                            onChange={(e) => setDayDetails(prev => ({ ...prev, [date]: e.target.value }))}
+                                            className="appearance-none bg-transparent pr-8 py-1 text-sm font-bold text-text-main outline-none cursor-pointer"
+                                        >
+                                            <option value="full-day">Full Day</option>
+                                            <option value="first-half">First Half</option>
+                                            <option value="second-half">Second Half</option>
+                                        </select>
+                                        <ChevronDown size={16} className="absolute right-0 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none" />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* Session Selection (Only for Single Day) */}
                 {duration === 'single' && (
