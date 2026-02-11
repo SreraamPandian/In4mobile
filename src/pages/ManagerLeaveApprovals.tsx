@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, X, Paperclip, Filter } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ApprovalFilter from '../components/ApprovalFilter';
+import RemarksModal from '../components/RemarksModal';
 
 const ManagerLeaveApprovals = () => {
     const navigate = useNavigate();
@@ -14,6 +15,11 @@ const ManagerLeaveApprovals = () => {
         fromDate: '',
         toDate: ''
     });
+
+    // Remarks Modal State
+    const [isRemarksOpen, setIsRemarksOpen] = useState(false);
+    const [remarksAction, setRemarksAction] = useState<'approve' | 'reject'>('approve');
+    const [selectedRequest, setSelectedRequest] = useState<any>(null);
 
     const leaveRequests = [
         { employee: 'John Doe', leaveType: 'Casual Leave', fromDate: '2026-01-15', toDate: '2026-01-16', days: 2, status: 'Approved', reason: 'Personal work', approvedBy: 'Admin (HR)', attachmentUrl: null },
@@ -38,12 +44,22 @@ const ManagerLeaveApprovals = () => {
         return true;
     });
 
-    const handleApprove = (_employee: string) => {
-        // Approve logic
+    const handleApproveClick = (request: any) => {
+        setSelectedRequest(request);
+        setRemarksAction('approve');
+        setIsRemarksOpen(true);
     };
 
-    const handleReject = (_employee: string) => {
-        // Reject logic
+    const handleRejectClick = (request: any) => {
+        setSelectedRequest(request);
+        setRemarksAction('reject');
+        setIsRemarksOpen(true);
+    };
+
+    const handleRemarksConfirm = (remarks: string) => {
+        console.log(`Action: ${remarksAction}, Request for: ${selectedRequest?.employee}, Remarks: ${remarks}`);
+        // Here you would typically call an API to update the status
+        alert(`Request ${remarksAction === 'approve' ? 'Approved' : 'Rejected'} with remarks: ${remarks}`);
     };
 
     return (
@@ -142,14 +158,14 @@ const ManagerLeaveApprovals = () => {
                         {leave.status === 'Pending' && (
                             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border">
                                 <button
-                                    onClick={() => handleApprove(leave.employee)}
+                                    onClick={() => handleApproveClick(leave)}
                                     className="py-2 bg-success text-white rounded-lg font-semibold hover:bg-success/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <CheckCircle size={16} />
                                     <span>Approve</span>
                                 </button>
                                 <button
-                                    onClick={() => handleReject(leave.employee)}
+                                    onClick={() => handleRejectClick(leave)}
                                     className="py-2 bg-error text-white rounded-lg font-semibold hover:bg-error/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <X size={16} />
@@ -175,6 +191,14 @@ const ManagerLeaveApprovals = () => {
                 onClose={() => setIsFilterOpen(false)}
                 onApply={setFilters}
                 onClear={() => setFilters({ search: '', status: 'All', fromDate: '', toDate: '' })}
+            />
+
+            <RemarksModal
+                isOpen={isRemarksOpen}
+                onClose={() => setIsRemarksOpen(false)}
+                onConfirm={handleRemarksConfirm}
+                title={remarksAction === 'approve' ? 'Approve Leave' : 'Reject Leave'}
+                actionType={remarksAction}
             />
         </div>
     );

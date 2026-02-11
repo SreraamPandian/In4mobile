@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, X, MapPin, Filter } from 'lucide-react';
 import Card from '../components/ui/Card';
 import ApprovalFilter from '../components/ApprovalFilter';
+import RemarksModal from '../components/RemarksModal';
 
 const ManagerPunchApprovals = () => {
     const navigate = useNavigate();
@@ -14,6 +15,11 @@ const ManagerPunchApprovals = () => {
         fromDate: '',
         toDate: ''
     });
+
+    // Remarks Modal State
+    const [isRemarksOpen, setIsRemarksOpen] = useState(false);
+    const [remarksAction, setRemarksAction] = useState<'approve' | 'reject'>('approve');
+    const [selectedRequest, setSelectedRequest] = useState<any>(null);
 
     const punchRequests = [
         { employee: 'John Doe', date: '2026-01-15', time: '09:05 AM', type: 'Punch In', status: 'Approved', approvedBy: 'Admin (HR)', location: 'Office' },
@@ -30,8 +36,23 @@ const ManagerPunchApprovals = () => {
         return true;
     });
 
-    const handleApprove = (_employee: string) => { };
-    const handleReject = (_employee: string) => { };
+    const handleApproveClick = (request: any) => {
+        setSelectedRequest(request);
+        setRemarksAction('approve');
+        setIsRemarksOpen(true);
+    };
+
+    const handleRejectClick = (request: any) => {
+        setSelectedRequest(request);
+        setRemarksAction('reject');
+        setIsRemarksOpen(true);
+    };
+
+    const handleRemarksConfirm = (remarks: string) => {
+        console.log(`Action: ${remarksAction}, Request for: ${selectedRequest?.employee}, Remarks: ${remarks}`);
+        // Here you would typically call an API to update the status
+        alert(`Request ${remarksAction === 'approve' ? 'Approved' : 'Rejected'} with remarks: ${remarks}`);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 pb-24">
@@ -118,14 +139,14 @@ const ManagerPunchApprovals = () => {
                         {punch.status === 'Pending' && (
                             <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border">
                                 <button
-                                    onClick={() => handleApprove(punch.employee)}
+                                    onClick={() => handleApproveClick(punch)}
                                     className="py-2 bg-success text-white rounded-lg font-semibold hover:bg-success/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <CheckCircle size={16} />
                                     <span>Approve</span>
                                 </button>
                                 <button
-                                    onClick={() => handleReject(punch.employee)}
+                                    onClick={() => handleRejectClick(punch)}
                                     className="py-2 bg-error text-white rounded-lg font-semibold hover:bg-error/90 transition-colors flex items-center justify-center space-x-1"
                                 >
                                     <X size={16} />
@@ -151,6 +172,14 @@ const ManagerPunchApprovals = () => {
                 onClose={() => setIsFilterOpen(false)}
                 onApply={setFilters}
                 onClear={() => setFilters({ search: '', status: 'All', fromDate: '', toDate: '' })}
+            />
+
+            <RemarksModal
+                isOpen={isRemarksOpen}
+                onClose={() => setIsRemarksOpen(false)}
+                onConfirm={handleRemarksConfirm}
+                title={remarksAction === 'approve' ? 'Approve Punch' : 'Reject Punch'}
+                actionType={remarksAction}
             />
         </div>
     );
