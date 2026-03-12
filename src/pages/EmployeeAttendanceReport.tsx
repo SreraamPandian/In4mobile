@@ -113,8 +113,59 @@ const EmployeeAttendanceReport = () => {
                 </div>
             </div>
 
+            {/* Summary Counts */}
+            <div className="px-6 pt-5 pb-1">
+                <div className="grid grid-cols-4 gap-2.5">
+                    {[
+                        {
+                            label: 'Present',
+                            count: allEmployees.filter(e => e.status === 'Present').length,
+                            bg: 'bg-emerald-50',
+                            text: 'text-emerald-600',
+                            border: 'border-emerald-100',
+                            dot: 'bg-emerald-500',
+                        },
+                        {
+                            label: 'Absent',
+                            count: allEmployees.filter(e => e.status === 'Absent').length,
+                            bg: 'bg-red-50',
+                            text: 'text-red-500',
+                            border: 'border-red-100',
+                            dot: 'bg-red-500',
+                        },
+                        {
+                            label: 'Leave',
+                            count: allEmployees.filter(e => e.status === 'Leave').length,
+                            bg: 'bg-blue-50',
+                            text: 'text-blue-500',
+                            border: 'border-blue-100',
+                            dot: 'bg-blue-500',
+                        },
+                        {
+                            label: 'Late',
+                            count: allEmployees.filter(e => e.status === 'Late').length,
+                            bg: 'bg-amber-50',
+                            text: 'text-amber-500',
+                            border: 'border-amber-100',
+                            dot: 'bg-amber-500',
+                        },
+                    ].map((stat) => (
+                        <div
+                            key={stat.label}
+                            className={`flex flex-col items-center justify-center py-3 px-1 rounded-xl border ${stat.bg} ${stat.border}`}
+                        >
+                            <span className={`text-xl font-extrabold ${stat.text}`}>{stat.count}</span>
+                            <div className="flex items-center space-x-1 mt-1">
+                                <span className={`w-1.5 h-1.5 rounded-full ${stat.dot}`}></span>
+                                <span className="text-[10px] font-semibold text-gray-500">{stat.label}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             {/* Search Section */}
-            <div className="px-6 py-6">
+            <div className="px-6 py-5">
                 <label className="block text-sm font-semibold text-text-main mb-3">Search Employee</label>
                 <div className="flex flex-col space-y-3">
                     <input

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, ChevronRight, CheckCircle2, Calendar, LogIn, LogOut, X, MapPin } from 'lucide-react';
 import Card from '../components/ui/Card';
 import TimeThemeIcon from '../components/ui/TimeThemeIcon';
@@ -14,6 +14,13 @@ const Dashboard = () => {
     const [showPunchRequestModal, setShowPunchRequestModal] = useState(false);
     const [punchType, setPunchType] = useState('Check In');
 
+    // Remarks modal state
+    const [showRemarksModal, setShowRemarksModal] = useState(false);
+    const [pendingAction, setPendingAction] = useState<'in' | 'out' | null>(null);
+    const [remarks, setRemarks] = useState('');
+    const [checkInRemark, setCheckInRemark] = useState<string>('');
+    const [checkOutRemark, setCheckOutRemark] = useState<string>('');
+
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date());
@@ -21,16 +28,37 @@ const Dashboard = () => {
         return () => clearInterval(timer);
     }, []);
 
-    const handleCheckIn = () => {
-        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        setCheckInTime(time);
-        setIsCheckedIn(true);
+    const openRemarksModal = (action: 'in' | 'out') => {
+        setPendingAction(action);
+        setRemarks('');
+        setShowRemarksModal(true);
     };
 
-    const handleCheckOut = () => {
+    const handleRemarksSubmit = () => {
         const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        setCheckOutTime(time);
-        setIsCheckedIn(false);
+        const todayKey = new Date().toISOString().split('T')[0];
+
+        if (pendingAction === 'in') {
+            setCheckInTime(time);
+            setCheckInRemark(remarks);
+            setIsCheckedIn(true);
+            // Save to localStorage for TimeLogReport
+            const stored = JSON.parse(localStorage.getItem('attendanceRemarks') || '{}');
+            stored[todayKey] = { ...stored[todayKey], checkInRemark: remarks, checkInTime: time };
+            localStorage.setItem('attendanceRemarks', JSON.stringify(stored));
+        } else {
+            setCheckOutTime(time);
+            setCheckOutRemark(remarks);
+            setIsCheckedIn(false);
+            // Save to localStorage for TimeLogReport
+            const stored = JSON.parse(localStorage.getItem('attendanceRemarks') || '{}');
+            stored[todayKey] = { ...stored[todayKey], checkOutRemark: remarks, checkOutTime: time };
+            localStorage.setItem('attendanceRemarks', JSON.stringify(stored));
+        }
+
+        setShowRemarksModal(false);
+        setPendingAction(null);
+        setRemarks('');
     };
 
     // Animation variants
@@ -93,7 +121,7 @@ const Dashboard = () => {
                         <div className="flex justify-center items-center mb-4 py-2">
                             {!isCheckedIn ? (
                                 <button
-                                    onClick={handleCheckIn}
+                                    onClick={() => openRemarksModal('in')}
                                     className="group flex flex-col items-center justify-center relative transition-transform active:scale-95"
                                 >
                                     {/* Outer soft glow ring */}
@@ -113,7 +141,7 @@ const Dashboard = () => {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={handleCheckOut}
+                                    onClick={() => openRemarksModal('out')}
                                     className="group flex flex-col items-center justify-center relative transition-transform active:scale-95"
                                 >
                                     {/* Outer soft glow ring */}
@@ -155,12 +183,14 @@ const Dashboard = () => {
                                         <div>
                                             <p className="text-xs text-text-secondary mb-1">Check In</p>
                                             <p className="text-sm font-semibold text-success">{checkInTime}</p>
+                                            {checkInRemark && <p className="text-xs text-text-muted mt-0.5 italic">"{checkInRemark}"</p>}
                                         </div>
                                     )}
                                     {checkOutTime && (
                                         <div>
                                             <p className="text-xs text-text-secondary mb-1">Check Out</p>
                                             <p className="text-sm font-semibold text-error">{checkOutTime}</p>
+                                            {checkOutRemark && <p className="text-xs text-text-muted mt-0.5 italic">"{checkOutRemark}"</p>}
                                         </div>
                                     )}
                                 </div>
@@ -242,6 +272,57 @@ const Dashboard = () => {
                     </Card>
                 </motion.div>
             </motion.div>
+
+            {/* Remarks Modal for Check In / Check Out */}
+            <AnimatePresence>
+                {showRemarksModal && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowRemarksModal(false)}
+                            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                        />
+
+                        {/* Modal */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.92 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.92 }}
+                            className="relative w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5"
+                        >
+                            <h3 className="text-base font-bold text-gray-900 mb-0.5">Add Remarks</h3>
+                            <p className="text-xs text-gray-400 mb-4">Please enter remarks to continue</p>
+
+                            <textarea
+                                value={remarks}
+                                onChange={(e) => setRemarks(e.target.value.slice(0, 45))}
+                                rows={3}
+                                placeholder="Enter remarks..."
+                                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-gray-800 resize-none text-sm transition-all"
+                            />
+                            <p className="text-[11px] text-gray-400 text-right mt-1 mb-4">{remarks.length}/45</p>
+
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    onClick={() => setShowRemarksModal(false)}
+                                    className="py-2.5 rounded-xl bg-gray-100 text-gray-600 font-bold text-sm hover:bg-gray-200 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleRemarksSubmit}
+                                    className="py-2.5 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-md shadow-primary/30"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
 
             {/* Punch Request Modal */}
             {showPunchRequestModal && (
