@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, User, CheckCircle2, Circle } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface ManagerApproval {
     name: string;
@@ -15,10 +15,12 @@ interface ReportDetail {
     from: string;
     to?: string;
     days?: number | string;
+    approvedAmount?: number | string;
     time?: string;
     purpose: string;
     appliedOn: string;
     approvals: ManagerApproval[];
+    isExpense?: boolean;
 }
 
 interface ReportDetailModalProps {
@@ -70,15 +72,22 @@ const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ isOpen, onClose, 
 
                             {/* Request Info Section */}
                             <div className="space-y-4 pt-4">
-                                <DetailRow label="Leave Type" value={data.type} />
+                                <DetailRow label={data.isExpense ? "Claim Type" : "Leave Type"} value={data.type} />
                                 <DetailRow
                                     label="Status"
                                     value={data.status}
                                     valueClassName={data.status.toLowerCase() === 'approved' ? 'text-success' : data.status.toLowerCase() === 'rejected' ? 'text-error' : 'text-warning'}
                                 />
-                                <DetailRow label={data.time ? "Date" : "Leave From"} value={data.from} />
+                                <DetailRow label={data.time ? "Date" : (data.isExpense ? "Expense Date" : "Leave From")} value={data.from} />
                                 {data.to && <DetailRow label="Leave To" value={data.to} />}
-                                {data.days && <DetailRow label="No Of Days" value={data.days} />}
+                                {data.days && <DetailRow label={data.isExpense ? "Applied Amount" : "No Of Days"} value={data.days} />}
+                                {data.isExpense && (
+                                    <DetailRow 
+                                        label="Approved Amount" 
+                                        value={data.approvedAmount || '--'} 
+                                        valueClassName={data.approvedAmount ? 'text-success font-black' : 'text-text-muted'} 
+                                    />
+                                )}
                                 {data.time && <DetailRow label="Time Slot" value={data.time} />}
                                 <DetailRow label="Purpose" value={data.purpose} className="items-start" />
                                 <DetailRow label="Applied On" value={data.appliedOn} />

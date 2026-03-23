@@ -137,6 +137,19 @@ const QuickActions = () => {
       hasDropdown: false,
       path: '/payslip'
     },
+    {
+      id: 'expense',
+      icon: DollarSign,
+      title: 'Expense',
+      subtitle: 'Apply Expense & View Approvals',
+      color: 'bg-emerald-50 text-emerald-600',
+      hasDropdown: true,
+      subItems: [
+        { title: 'Apply for Expense', path: '/apply-expense', icon: FileText },
+        { title: 'My Expense Claim', path: '/my-expense-report', icon: List },
+        { title: 'Expense Claim Approvals', path: '/manager-expense-approvals', icon: ClipboardCheck },
+      ]
+    },
   ];
 
   return (

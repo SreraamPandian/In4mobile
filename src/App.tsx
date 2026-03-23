@@ -39,6 +39,9 @@ import MonthlyAttendanceReport from './pages/MonthlyAttendanceReport';
 import EmployeeList from './pages/EmployeeList';
 import MapView from './pages/MapView';
 import ForgotPassword from './pages/ForgotPassword';
+import ApplyExpense from './pages/ApplyExpense';
+import MyExpenseReport from './pages/MyExpenseReport';
+import ManagerExpenseApprovals from './pages/ManagerExpenseApprovals';
 
 // Placeholder for Reports
 const Reports = () => (
@@ -95,6 +98,9 @@ function App() {
             <Route path="/leave-approved" element={<LeaveApproved />} />
             <Route path="/permission-requested" element={<PermissionRequested />} />
             <Route path="/payslip-available" element={<PayslipAvailable />} />
+            <Route path="/apply-expense" element={<ApplyExpense />} />
+            <Route path="/my-expense-report" element={<MyExpenseReport />} />
+            <Route path="/manager-expense-approvals" element={<ManagerExpenseApprovals />} />
           </Route>
 
           {/* Catch all redirect */}
