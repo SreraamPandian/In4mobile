@@ -42,6 +42,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import ApplyExpense from './pages/ApplyExpense';
 import MyExpenseReport from './pages/MyExpenseReport';
 import ManagerExpenseApprovals from './pages/ManagerExpenseApprovals';
+import AddVisitor from './pages/AddVisitor';
+import VisitorPreEntry from './pages/VisitorPreEntry';
 
 // Placeholder for Reports
 const Reports = () => (
@@ -101,6 +103,8 @@ function App() {
             <Route path="/apply-expense" element={<ApplyExpense />} />
             <Route path="/my-expense-report" element={<MyExpenseReport />} />
             <Route path="/manager-expense-approvals" element={<ManagerExpenseApprovals />} />
+            <Route path="/add-visitor" element={<AddVisitor />} />
+            <Route path="/visitor-pre-entry" element={<VisitorPreEntry />} />
           </Route>
 
           {/* Catch all redirect */}
